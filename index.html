@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LORE ATELIÉR — Premium Cotton Sportswear</title>
+  <meta name="description" content="Premium cotton-based performance sportswear. Anti-synthetic. Anti-microplastic. Your skin deserves better." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            cream: '#FAF7F2',
+            sand: '#F0EBE3',
+            terracotta: '#C2644A',
+            ink: '#1A1612',
+            bark: '#5C4F3D',
+            clay: '#A39382',
+            stone: '#C4B9A8',
+          },
+          fontFamily: {
+            display: ['"Instrument Serif"', 'serif'],
+            body: ['Inter', 'sans-serif'],
+            mono: ['"Space Mono"', 'monospace'],
+          },
+        },
+      },
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background: #FAF7F2; color: #1A1612; }
+
+    /* Scroll progress bar */
+    #progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: #C2644A; z-index: 9999; width: 0%; transition: width 0.1s linear; }
+
+    /* Film grain overlay */
+    #grain { position: fixed; inset: 0; pointer-events: none; z-index: 9998; opacity: 0.03; }
+
+    /* Frosted navbar */
+    #navbar { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); background: rgba(250, 247, 242, 0.8); }
+
+    /* Marquee */
+    @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+    .marquee-track { animation: marquee 30s linear infinite; }
+    .marquee-track:hover { animation-play-state: paused; }
+
+    /* Scroll reveal */
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Accordion */
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .accordion-content.open { max-height: 600px; }
+    .accordion-icon { transition: transform 0.3s ease; }
+    .accordion-icon.rotated { transform: rotate(45deg); }
+
+    /* Card hover */
+    .card-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .card-lift:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(26,22,18,0.08); }
+  </style>
+</head>
+<body class="antialiased">
+
+<!-- Progress Bar -->
+<div id="progress-bar"></div>
+
+<!-- Film Grain -->
+<svg id="grain" width="100%" height="100%">
+  <filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/></filter>
+  <rect width="100%" height="100%" filter="url(#noiseFilter)" />
+</svg>
+
+<!-- Navbar -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b border-stone/30">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="#" class="font-display text-xl tracking-wide text-ink">LORE ATELIÉR</a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#problem" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">The Problem</a>
+      <a href="#cotton" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Why Cotton</a>
+      <a href="#science" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Science</a>
+      <a href="#collection" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Collection</a>
+      <a href="#waitlist" class="bg-terracotta text-cream px-5 py-2 text-xs font-mono uppercase tracking-widest hover:bg-terracotta/90 transition-colors">Join Waitlist</a>
+    </div>
+  </div>
+</nav>
+
+<!-- 001 HERO -->
+<section class="relative min-h-screen flex items-end pb-24 pt-32 overflow-hidden">
+  <div class="absolute inset-0">
+    <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1920&q=80" alt="Athletic movement" class="w-full h-full object-cover" />
+    <div class="absolute inset-0 bg-gradient-to-b from-ink/40 via-ink/20 to-cream"></div>
+  </div>
+  <div class="relative z-10 max-w-7xl mx-auto px-6 w-full">
+    <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-stone mb-4 reveal">001 — Introduction</p>
+    <h1 class="font-display text-5xl md:text-7xl lg:text-8xl text-cream leading-[0.95] mb-6 reveal">
+      Your skin<br /><em class="font-display italic">deserves better.</em>
+    </h1>
+    <p class="text-cream/80 font-light max-w-xl text-lg leading-relaxed mb-8 reveal">
+      Every synthetic garment you train in sheds up to 700,000 microplastic fibers per wash — fibers that end up on your skin, in your lungs, and in our oceans. It's time for a new standard.
+    </p>
+    <a href="#waitlist" class="inline-block bg-terracotta text-cream px-8 py-4 font-mono text-xs uppercase tracking-[0.2em] hover:bg-terracotta/90 transition-colors reveal">
+      Join the Waitlist →
+    </a>
+  </div>
+</section>
+
+<!-- FACTS TICKER -->
+<section class="bg-sand border-y border-stone/30 py-4 overflow-hidden">
+  <div class="marquee-track flex items-center gap-12 whitespace-nowrap" style="width: max-content;">
+    <span class="font-mono text-[11px] uppercase tracking-widest text-clay">700K microfibers per wash</span>
+    <span class="text-stone">◆</span>
+    <span class="font-mono text-[11px] uppercase tracking-widest text-clay">Nanoplastics penetrate skin barrier</span>
+    <span class="text-stone">◆</span>
+    <span class="font-mono text-[11px] uppercase tracking-widest text-clay">GOTS Certified Organic</span>
+    <span class="text-stone">◆</span>
+    <span class="font-mono text-[11px] uppercase tracking-widest text-clay">100% Supima ELS Cotton</span>
+    <span class="text-stone">◆</span>
+    <span class="font-mono text-[11px] uppercase tracking-widest text-clay">TENCEL™ Lyocell Blend</span>
+    <span class="text-stone">◆</span>
+    <span class="font-mono text-[11px] uppercase tracking-widest text-clay">Zero synthetic contact</span>
+    <span class="text-stone">◆</span>
+    <span class="font-mono text-[11px] uppercase tracking-widest text-clay">700K microfibers per wash</span>
+    <span class="text-stone">◆</span>
+    <span class="font-mono text-[11px] uppercase tracking-widest text-clay">Nanoplastics penetrate skin barrier</span>
+    <span class="text-stone">◆</span>
+    <span class="font-mono text-[11px] uppercase tracking-widest text-clay">GOTS Certified Organic</span>
+    <span class="text-stone">◆</span>
+    <span class="font-mono text-[11px] uppercase tracking-widest text-clay">100% Supima ELS Cotton</span>
+    <span class="text-stone">◆</span>
+    <span class="font-mono text-[11px] uppercase tracking-widest text-clay">TENCEL™ Lyocell Blend</span>
+    <span class="text-stone">◆</span>
+    <span class="font-mono text-[11px] uppercase tracking-widest text-clay">Zero synthetic contact</span>
+    <span class="text-stone">◆</span>
+  </div>
+</section>
+
+<!-- 002 THE PROBLEM -->
+<section id="problem" class="py-24 md:py-32">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-2 gap-16 items-start">
+      <div class="reveal">
+        <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">002 — The Problem</p>
+        <h2 class="font-display text-4xl md:text-5xl leading-tight mb-6">
+          What's really in your <em class="italic">activewear?</em>
+        </h2>
+        <p class="text-bark font-light leading-relaxed mb-4">
+          A 2024 study from the University of Birmingham found that nanoplastics from synthetic textiles can penetrate human skin cells and accumulate in tissue. Every time you pull on a polyester legging, you're wrapping your body in plastic.
+        </p>
+        <p class="text-bark font-light leading-relaxed mb-4">
+          During exercise, your pores open. You sweat. Your skin becomes more permeable. And those microscopic plastic particles? They don't just sit on the surface — they migrate inward.
+        </p>
+        <p class="text-bark font-light leading-relaxed">
+          The activewear industry has normalized synthetic fabrics as "performance" materials. We're here to challenge that narrative with science, transparency, and a radically better alternative.
+        </p>
+      </div>
+      <div class="grid grid-cols-2 gap-4 reveal">
+        <div class="bg-sand p-6 rounded-lg card-lift">
+          <p class="font-display text-4xl text-terracotta mb-2">700K</p>
+          <p class="font-mono text-[10px] uppercase tracking-widest text-clay">Microfibers shed per wash cycle from one synthetic garment</p>
+        </div>
+        <div class="bg-sand p-6 rounded-lg card-lift">
+          <p class="font-display text-4xl text-terracotta mb-2">100nm</p>
+          <p class="font-mono text-[10px] uppercase tracking-widest text-clay">Nanoplastic particles small enough to cross the skin barrier</p>
+        </div>
+        <div class="bg-sand p-6 rounded-lg card-lift">
+          <p class="font-display text-4xl text-terracotta mb-2">60%</p>
+          <p class="font-mono text-[10px] uppercase tracking-widest text-clay">Of all clothing globally is made from synthetic fibers</p>
+        </div>
+        <div class="bg-sand p-6 rounded-lg card-lift">
+          <p class="font-display text-4xl text-terracotta mb-2">35%</p>
+          <p class="font-mono text-[10px] uppercase tracking-widest text-clay">Of ocean microplastics come from textile washing</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIVIDER QUOTE -->
+<section class="bg-ink py-20 md:py-28">
+  <div class="max-w-4xl mx-auto px-6 text-center reveal">
+    <p class="font-display text-2xl md:text-4xl text-cream/90 italic leading-relaxed">
+      "We don't believe performance should come at the cost of your health."
+    </p>
+    <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-clay mt-6">— LORE ATELIÉR</p>
+  </div>
+</section>
+
+<!-- 003 WHY COTTON -->
+<section id="cotton" class="py-24 md:py-32">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">003 — Why Cotton</p>
+      <h2 class="font-display text-4xl md:text-5xl leading-tight">
+        Four pillars of <em class="italic">conscious performance.</em>
+      </h2>
+    </div>
+    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="bg-sand p-8 rounded-lg card-lift reveal">
+        <div class="w-10 h-10 rounded-full bg-terracotta/10 flex items-center justify-center mb-4">
+          <span class="font-mono text-terracotta text-sm font-bold">01</span>
+        </div>
+        <h3 class="font-display text-xl mb-3">Supima ELS Cotton</h3>
+        <p class="text-bark text-sm font-light leading-relaxed">
+          Extra-long staple fibers grown in the USA. Twice as strong, incredibly soft, and naturally breathable — without a single synthetic strand.
+        </p>
+      </div>
+      <div class="bg-sand p-8 rounded-lg card-lift reveal">
+        <div class="w-10 h-10 rounded-full bg-terracotta/10 flex items-center justify-center mb-4">
+          <span class="font-mono text-terracotta text-sm font-bold">02</span>
+        </div>
+        <h3 class="font-display text-xl mb-3">TENCEL™ Lyocell</h3>
+        <p class="text-bark text-sm font-light leading-relaxed">
+          Derived from sustainably sourced wood pulp in a closed-loop process. Exceptional moisture management with 50% more absorption than cotton alone.
+        </p>
+      </div>
+      <div class="bg-sand p-8 rounded-lg card-lift reveal">
+        <div class="w-10 h-10 rounded-full bg-terracotta/10 flex items-center justify-center mb-4">
+          <span class="font-mono text-terracotta text-sm font-bold">03</span>
+        </div>
+        <h3 class="font-display text-xl mb-3">Bio-Based Elastane</h3>
+        <p class="text-bark text-sm font-light leading-relaxed">
+          Plant-derived stretch fiber that replaces petroleum-based spandex. Full range of motion, zero fossil fuel dependency.
+        </p>
+      </div>
+      <div class="bg-sand p-8 rounded-lg card-lift reveal">
+        <div class="w-10 h-10 rounded-full bg-terracotta/10 flex items-center justify-center mb-4">
+          <span class="font-mono text-terracotta text-sm font-bold">04</span>
+        </div>
+        <h3 class="font-display text-xl mb-3">GOTS Certified</h3>
+        <p class="text-bark text-sm font-light leading-relaxed">
+          The gold standard for organic textiles. Every step — from raw fiber to finished garment — is audited for environmental and social responsibility.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDITORIAL PHOTO BREAK -->
+<section class="py-8">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid grid-cols-3 gap-4 reveal">
+      <div class="aspect-[3/4] overflow-hidden rounded-lg">
+        <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=600&q=80" alt="Pilates" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+      </div>
+      <div class="aspect-[3/4] overflow-hidden rounded-lg">
+        <img src="https://images.unsplash.com/photo-1506126613408-eca07ce68773?auto=format&fit=crop&w=600&q=80" alt="Yoga" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+      </div>
+      <div class="aspect-[3/4] overflow-hidden rounded-lg">
+        <img src="https://images.unsplash.com/photo-1483721310020-03333e577078?auto=format&fit=crop&w=600&q=80" alt="Running" class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 004 COMPARISON TABLE -->
+<section class="py-24 md:py-32">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">004 — Comparison</p>
+      <h2 class="font-display text-4xl md:text-5xl leading-tight">
+        The <em class="italic">difference</em> is clear.
+      </h2>
+    </div>
+    <div class="reveal">
+      <div class="grid grid-cols-3 gap-0 border border-stone/30 rounded-lg overflow-hidden">
+        <div class="bg-sand p-4 font-mono text-[10px] uppercase tracking-widest text-clay border-b border-stone/30">Criteria</div>
+        <div class="bg-sand p-4 font-mono text-[10px] uppercase tracking-widest text-clay border-b border-l border-stone/30 text-center">Synthetic</div>
+        <div class="bg-sand p-4 font-mono text-[10px] uppercase tracking-widest text-terracotta border-b border-l border-stone/30 text-center">LORE ATELIÉR</div>
+
+        <div class="p-4 text-sm text-bark border-b border-stone/20">Microplastic Shedding</div>
+        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-bark">700K fibers/wash</div>
+        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-ink font-medium">Zero</div>
+
+        <div class="p-4 text-sm text-bark border-b border-stone/20">Skin Contact Safety</div>
+        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-bark">Nanoplastic risk</div>
+        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-ink font-medium">100% natural</div>
+
+        <div class="p-4 text-sm text-bark border-b border-stone/20">Breathability</div>
+        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-bark">Traps heat</div>
+        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-ink font-medium">Naturally cool</div>
+
+        <div class="p-4 text-sm text-bark border-b border-stone/20">Moisture Management</div>
+        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-bark">Wicking coatings</div>
+        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-ink font-medium">TENCEL™ absorption</div>
+
+        <div class="p-4 text-sm text-bark border-b border-stone/20">Stretch & Recovery</div>
+        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-bark">Petroleum spandex</div>
+        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-ink font-medium">Bio-based elastane</div>
+
+        <div class="p-4 text-sm text-bark border-b border-stone/20">Certification</div>
+        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-bark">Often none</div>
+        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-ink font-medium">GOTS Certified</div>
+
+        <div class="p-4 text-sm text-bark">End of Life</div>
+        <div class="p-4 text-sm text-center border-l border-stone/20 text-bark">500+ yr decomposition</div>
+        <div class="p-4 text-sm text-center border-l border-stone/20 text-ink font-medium">Biodegradable</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 005 BUILT FOR MOVEMENT -->
+<section class="py-24 md:py-32 bg-sand">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">005 — Built for Movement</p>
+      <h2 class="font-display text-4xl md:text-5xl leading-tight">
+        Designed for every <em class="italic">discipline.</em>
+      </h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8">
+      <div class="reveal card-lift">
+        <div class="aspect-[3/4] overflow-hidden rounded-lg mb-4">
+          <img src="https://images.unsplash.com/photo-1599901860904-17e6ed7083a0?auto=format&fit=crop&w=600&q=80" alt="Pilates reformer" class="w-full h-full object-cover" />
+        </div>
+        <h3 class="font-display text-xl mb-2">Pilates & Yoga</h3>
+        <p class="text-bark text-sm font-light leading-relaxed">Full range of motion with bio-based stretch. Soft hand-feel against skin during floor work. No plastic on your body during deep breathing.</p>
+      </div>
+      <div class="reveal card-lift">
+        <div class="aspect-[3/4] overflow-hidden rounded-lg mb-4">
+          <img src="https://images.unsplash.com/photo-1571008887538-b36bb32f4571?auto=format&fit=crop&w=600&q=80" alt="Running" class="w-full h-full object-cover" />
+        </div>
+        <h3 class="font-display text-xl mb-2">Running & HIIT</h3>
+        <p class="text-bark text-sm font-light leading-relaxed">TENCEL™ manages moisture naturally. Supima cotton stays cool under load. Built to perform without shedding plastic into your sweat.</p>
+      </div>
+      <div class="reveal card-lift">
+        <div class="aspect-[3/4] overflow-hidden rounded-lg mb-4">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" alt="Lifestyle" class="w-full h-full object-cover" />
+        </div>
+        <h3 class="font-display text-xl mb-2">Lifestyle</h3>
+        <p class="text-bark text-sm font-light leading-relaxed">Studio to street without compromise. Elevated basics that look as intentional as they feel — because what you wear should never be a health risk.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 006 THE SCIENCE -->
+<section id="science" class="py-24 md:py-32">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">006 — The Science</p>
+      <h2 class="font-display text-4xl md:text-5xl leading-tight">
+        Research-backed <em class="italic">materials.</em>
+      </h2>
+    </div>
+    <div class="space-y-3 reveal" id="science-accordion">
+      <div class="border border-stone/30 rounded-lg overflow-hidden">
+        <button class="accordion-trigger w-full flex items-center justify-between p-5 text-left" onclick="toggleAccordion(this)">
+          <span class="text-sm font-medium text-ink">Nanoplastics & Skin Penetration</span>
+          <span class="accordion-icon text-terracotta text-xl leading-none">+</span>
+        </button>
+        <div class="accordion-content px-5 pb-5">
+          <p class="text-bark text-sm font-light leading-relaxed mb-2">Research from the University of Birmingham (2024) demonstrated that polystyrene nanoplastics as small as 100nm can penetrate human skin cells in vitro. During exercise, increased skin permeability through sweating and pore dilation may accelerate this absorption.</p>
+          <p class="font-mono text-[10px] text-clay">Source: University of Birmingham, Environment International, 2024</p>
+        </div>
+      </div>
+      <div class="border border-stone/30 rounded-lg overflow-hidden">
+        <button class="accordion-trigger w-full flex items-center justify-between p-5 text-left" onclick="toggleAccordion(this)">
+          <span class="text-sm font-medium text-ink">Microfiber Shedding from Synthetic Textiles</span>
+          <span class="accordion-icon text-terracotta text-xl leading-none">+</span>
+        </button>
+        <div class="accordion-content px-5 pb-5">
+          <p class="text-bark text-sm font-light leading-relaxed mb-2">A single polyester garment can release up to 700,000 microplastic fibers in one domestic wash cycle. These fibers pass through wastewater treatment and enter waterways, eventually contaminating marine ecosystems and re-entering the food chain.</p>
+          <p class="font-mono text-[10px] text-clay">Source: Plymouth University, Marine Pollution Bulletin, 2016</p>
+        </div>
+      </div>
+      <div class="border border-stone/30 rounded-lg overflow-hidden">
+        <button class="accordion-trigger w-full flex items-center justify-between p-5 text-left" onclick="toggleAccordion(this)">
+          <span class="text-sm font-medium text-ink">TENCEL™ Lyocell Performance Data</span>
+          <span class="accordion-icon text-terracotta text-xl leading-none">+</span>
+        </button>
+        <div class="accordion-content px-5 pb-5">
+          <p class="text-bark text-sm font-light leading-relaxed mb-2">TENCEL™ Lyocell fibers demonstrate 50% greater moisture absorption compared to cotton, with superior moisture vapor transmission rates. The closed-loop production process recovers 99%+ of solvents, making it one of the most environmentally responsible fiber production methods available.</p>
+          <p class="font-mono text-[10px] text-clay">Source: Lenzing AG Technical Documentation</p>
+        </div>
+      </div>
+      <div class="border border-stone/30 rounded-lg overflow-hidden">
+        <button class="accordion-trigger w-full flex items-center justify-between p-5 text-left" onclick="toggleAccordion(this)">
+          <span class="text-sm font-medium text-ink">Supima Cotton Specifications</span>
+          <span class="accordion-icon text-terracotta text-xl leading-none">+</span>
+        </button>
+        <div class="accordion-content px-5 pb-5">
+          <p class="text-bark text-sm font-light leading-relaxed mb-2">Supima® cotton features extra-long staple (ELS) fibers averaging 35mm+ in length — nearly twice the length of standard upland cotton. This results in a fiber that is 45% stronger, significantly softer, and more resistant to pilling, with superior color retention after repeated washing.</p>
+          <p class="font-mono text-[10px] text-clay">Source: Supima Association, supima.com</p>
+        </div>
+      </div>
+      <div class="border border-stone/30 rounded-lg overflow-hidden">
+        <button class="accordion-trigger w-full flex items-center justify-between p-5 text-left" onclick="toggleAccordion(this)">
+          <span class="text-sm font-medium text-ink">GOTS Certification Standard</span>
+          <span class="accordion-icon text-terracotta text-xl leading-none">+</span>
+        </button>
+        <div class="accordion-content px-5 pb-5">
+          <p class="text-bark text-sm font-light leading-relaxed mb-2">The Global Organic Textile Standard (GOTS) is the world's leading processing standard for organic fibers. It covers the entire textile supply chain with strict environmental criteria (wastewater treatment, chemical restrictions, energy use) and social criteria (fair wages, safe working conditions, no child labor).</p>
+          <p class="font-mono text-[10px] text-clay">Source: Global Organic Textile Standard, global-standard.org</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 007 THE COLLECTION -->
+<section id="collection" class="py-24 md:py-32 bg-sand">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">007 — The Collection</p>
+      <h2 class="font-display text-4xl md:text-5xl leading-tight">
+        Launching <em class="italic">soon.</em>
+      </h2>
+    </div>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- Legging -->
+      <div class="bg-cream rounded-lg p-8 flex flex-col items-center card-lift reveal">
+        <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
+          <path d="M35 10h50v30c0 10-2 20-5 40l-8 60c-1 8-2 15-2 20v30h-8v-30l-2-25-2 25v30h-8v-30c0-5-1-12-2-20l-8-60c-3-20-5-30-5-40V10z" stroke-dasharray="4 2"/>
+          <line x1="60" y1="10" x2="60" y2="80" stroke-dasharray="2 4" opacity="0.3"/>
+        </svg>
+        <h3 class="font-display text-lg">The Legging</h3>
+        <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">Supima · TENCEL™</p>
+      </div>
+      <!-- Crop Top -->
+      <div class="bg-cream rounded-lg p-8 flex flex-col items-center card-lift reveal">
+        <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
+          <path d="M30 50c0-15 10-30 30-30s30 15 30 30v40H30V50z" stroke-dasharray="4 2"/>
+          <path d="M30 50c-10 0-18-5-20-15l10-5c2 5 5 10 10 10" stroke-dasharray="4 2"/>
+          <path d="M90 50c10 0 18-5 20-15l-10-5c-2 5-5 10-10 10" stroke-dasharray="4 2"/>
+          <line x1="60" y1="25" x2="60" y2="85" stroke-dasharray="2 4" opacity="0.3"/>
+        </svg>
+        <h3 class="font-display text-lg">The Crop Top</h3>
+        <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">Organic Cotton</p>
+      </div>
+      <!-- Bodysuit -->
+      <div class="bg-cream rounded-lg p-8 flex flex-col items-center card-lift reveal">
+        <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
+          <path d="M35 30c0-10 10-20 25-20s25 10 25 20v70c0 5-2 10-5 15l-5 10v20h-10v-15h-10v15H45v-20l-5-10c-3-5-5-10-5-15V30z" stroke-dasharray="4 2"/>
+          <path d="M35 35c-8 0-15-3-18-12l8-4c2 4 5 8 10 8" stroke-dasharray="4 2"/>
+          <path d="M85 35c8 0 15-3 18-12l-8-4c-2 4-5 8-10 8" stroke-dasharray="4 2"/>
+          <line x1="60" y1="15" x2="60" y2="100" stroke-dasharray="2 4" opacity="0.3"/>
+        </svg>
+        <h3 class="font-display text-lg">The Bodysuit</h3>
+        <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">Supima · Bio-Elastane</p>
+      </div>
+      <!-- Hoodie -->
+      <div class="bg-cream rounded-lg p-8 flex flex-col items-center card-lift reveal">
+        <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
+          <path d="M30 45c0-15 10-30 30-30s30 15 30 30v70H30V45z" stroke-dasharray="4 2"/>
+          <path d="M45 15c-5-5-10-5-15 0" stroke-dasharray="4 2"/>
+          <path d="M75 15c5-5 10-5 15 0" stroke-dasharray="4 2"/>
+          <path d="M30 45c-12 0-20-3-22-12l12-6c2 6 5 10 10 10" stroke-dasharray="4 2"/>
+          <path d="M90 45c12 0 20-3 22-12l-12-6c-2 6-5 10-10 10" stroke-dasharray="4 2"/>
+          <ellipse cx="60" cy="15" rx="12" ry="8" stroke-dasharray="3 2"/>
+          <line x1="60" y1="23" x2="60" y2="110" stroke-dasharray="2 4" opacity="0.3"/>
+        </svg>
+        <h3 class="font-display text-lg">The Hoodie</h3>
+        <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">GOTS Organic</p>
+      </div>
+      <!-- Sport Bra -->
+      <div class="bg-cream rounded-lg p-8 flex flex-col items-center card-lift reveal">
+        <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
+          <path d="M30 55c0-10 8-25 30-25s30 15 30 25v20H30V55z" stroke-dasharray="4 2"/>
+          <path d="M35 30l-5-15" stroke-dasharray="3 2"/>
+          <path d="M85 30l5-15" stroke-dasharray="3 2"/>
+          <path d="M45 55c0-8 7-12 15-12s15 4 15 12" stroke-dasharray="3 3" opacity="0.4"/>
+          <line x1="60" y1="35" x2="60" y2="70" stroke-dasharray="2 4" opacity="0.3"/>
+        </svg>
+        <h3 class="font-display text-lg">The Sport Bra</h3>
+        <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">TENCEL™ · Bio-Elastane</p>
+      </div>
+      <!-- Oversized Tee -->
+      <div class="bg-cream rounded-lg p-8 flex flex-col items-center card-lift reveal">
+        <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
+          <path d="M25 40c0-12 12-25 35-25s35 13 35 25v75H25V40z" stroke-dasharray="4 2"/>
+          <path d="M25 40c-12 0-20-5-22-15l14-6c1 6 4 12 8 13" stroke-dasharray="4 2"/>
+          <path d="M95 40c12 0 20-5 22-15l-14-6c-1 6-4 12-8 13" stroke-dasharray="4 2"/>
+          <path d="M48 15c3-3 8-3 12-3s9 0 12 3" stroke-dasharray="3 2" opacity="0.5"/>
+          <line x1="60" y1="18" x2="60" y2="110" stroke-dasharray="2 4" opacity="0.3"/>
+        </svg>
+        <h3 class="font-display text-lg">The Oversized Tee</h3>
+        <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">Supima Cotton</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 008 FAQ -->
+<section class="py-24 md:py-32">
+  <div class="max-w-4xl mx-auto px-6">
+    <div class="text-center mb-16 reveal">
+      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">008 — FAQ</p>
+      <h2 class="font-display text-4xl md:text-5xl leading-tight">
+        Common <em class="italic">questions.</em>
+      </h2>
+    </div>
+    <div class="space-y-3 reveal" id="faq-accordion">
+      <div class="border border-stone/30 rounded-lg overflow-hidden">
+        <button class="accordion-trigger w-full flex items-center justify-between p-5 text-left" onclick="toggleAccordion(this)">
+          <span class="text-sm font-medium text-ink">Isn't cotton too heavy for activewear?</span>
+          <span class="accordion-icon text-terracotta text-xl leading-none">+</span>
+        </button>
+        <div class="accordion-content px-5 pb-5">
+          <p class="text-bark text-sm font-light leading-relaxed">Traditional cotton, yes. But Supima ELS cotton combined with TENCEL™ Lyocell creates a fabric that's lighter, more breathable, and better at moisture management than most synthetic blends. The key is in the fiber engineering, not the fiber type.</p>
+        </div>
+      </div>
+      <div class="border border-stone/30 rounded-lg overflow-hidden">
+        <button class="accordion-trigger w-full flex items-center justify-between p-5 text-left" onclick="toggleAccordion(this)">
+          <span class="text-sm font-medium text-ink">How dangerous are microplastics really?</span>
+          <span class="accordion-icon text-terracotta text-xl leading-none">+</span>
+        </button>
+        <div class="accordion-content px-5 pb-5">
+          <p class="text-bark text-sm font-light leading-relaxed">Research is still evolving, but studies have found microplastics in human blood, lungs, and placenta. The University of Birmingham study showed nanoplastics can penetrate skin cells. While long-term health effects are still being studied, we believe the precautionary principle applies — why expose yourself unnecessarily?</p>
+        </div>
+      </div>
+      <div class="border border-stone/30 rounded-lg overflow-hidden">
+        <button class="accordion-trigger w-full flex items-center justify-between p-5 text-left" onclick="toggleAccordion(this)">
+          <span class="text-sm font-medium text-ink">When does LORE ATELIÉR launch?</span>
+          <span class="accordion-icon text-terracotta text-xl leading-none">+</span>
+        </button>
+        <div class="accordion-content px-5 pb-5">
+          <p class="text-bark text-sm font-light leading-relaxed">We're currently in the final stages of fabric development and production sampling. Join the waitlist to be first to know when we launch — and to receive exclusive early access pricing.</p>
+        </div>
+      </div>
+      <div class="border border-stone/30 rounded-lg overflow-hidden">
+        <button class="accordion-trigger w-full flex items-center justify-between p-5 text-left" onclick="toggleAccordion(this)">
+          <span class="text-sm font-medium text-ink">What does GOTS certification mean?</span>
+          <span class="accordion-icon text-terracotta text-xl leading-none">+</span>
+        </button>
+        <div class="accordion-content px-5 pb-5">
+          <p class="text-bark text-sm font-light leading-relaxed">GOTS (Global Organic Textile Standard) is the world's leading standard for organic textiles. It means every stage of production — from farming to manufacturing to labeling — meets strict environmental and social criteria. No greenwashing. No half measures.</p>
+        </div>
+      </div>
+      <div class="border border-stone/30 rounded-lg overflow-hidden">
+        <button class="accordion-trigger w-full flex items-center justify-between p-5 text-left" onclick="toggleAccordion(this)">
+          <span class="text-sm font-medium text-ink">How is this different from other "sustainable" brands?</span>
+          <span class="accordion-icon text-terracotta text-xl leading-none">+</span>
+        </button>
+        <div class="accordion-content px-5 pb-5">
+          <p class="text-bark text-sm font-light leading-relaxed">Most "sustainable" activewear brands still use synthetic fabrics — often recycled polyester, which still sheds microplastics. We're not iterating on the problem. We're eliminating it entirely by building from the ground up with natural, high-performance fibers.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 009 WAITLIST CTA -->
+<section id="waitlist" class="bg-ink py-24 md:py-32">
+  <div class="max-w-2xl mx-auto px-6 text-center">
+    <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4 reveal">009 — Waitlist</p>
+    <h2 class="font-display text-4xl md:text-5xl text-cream leading-tight mb-4 reveal">
+      Be the <em class="italic">first to wear it.</em>
+    </h2>
+    <p class="text-stone font-light mb-10 reveal">Join the waitlist for early access, exclusive pricing, and updates on our launch.</p>
+    <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto reveal" onsubmit="handleWaitlist(event)">
+      <input type="email" placeholder="your@email.com" required class="flex-1 px-5 py-3 bg-cream/10 border border-stone/30 text-cream placeholder-clay text-sm font-light rounded-none focus:outline-none focus:border-terracotta transition-colors" />
+      <button type="submit" class="px-8 py-3 bg-terracotta text-cream font-mono text-xs uppercase tracking-[0.2em] hover:bg-terracotta/90 transition-colors whitespace-nowrap">Join Waitlist</button>
+    </form>
+    <p id="waitlist-msg" class="text-terracotta text-sm mt-4 hidden font-light">Thank you — you're on the list.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-cream border-t border-stone/30 py-16">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-3 gap-12 items-start">
+      <div>
+        <p class="font-display text-xl tracking-wide text-ink mb-2">LORE ATELIÉR</p>
+        <p class="text-bark text-sm font-light">Premium cotton-based performance sportswear.</p>
+      </div>
+      <div class="flex flex-col gap-2">
+        <a href="#problem" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">The Problem</a>
+        <a href="#cotton" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Why Cotton</a>
+        <a href="#science" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Science</a>
+        <a href="#collection" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Collection</a>
+      </div>
+      <div class="flex flex-col gap-2">
+        <a href="#" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Instagram</a>
+        <a href="#" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">TikTok</a>
+        <a href="#" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Pinterest</a>
+      </div>
+    </div>
+    <div class="mt-12 pt-8 border-t border-stone/20 flex flex-col md:flex-row justify-between items-center gap-4">
+      <p class="font-mono text-[10px] uppercase tracking-widest text-clay">&copy; 2026 LORE ATELIÉR. All rights reserved.</p>
+      <p class="font-display text-sm italic text-clay">Your skin deserves better.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Scroll progress bar
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    const progress = (scrollTop / scrollHeight) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+  });
+
+  // Scroll reveal with IntersectionObserver
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Accordion toggle
+  function toggleAccordion(btn) {
+    const content = btn.nextElementSibling;
+    const icon = btn.querySelector('.accordion-icon');
+    const parent = btn.closest('[id$="-accordion"]') || btn.closest('.space-y-3');
+    const isOpen = content.classList.contains('open');
+
+    // Close all in this group
+    parent.querySelectorAll('.accordion-content').forEach(c => c.classList.remove('open'));
+    parent.querySelectorAll('.accordion-icon').forEach(i => i.classList.remove('rotated'));
+
+    // Toggle current
+    if (!isOpen) {
+      content.classList.add('open');
+      icon.classList.add('rotated');
+    }
+  }
+
+  // Waitlist form
+  function handleWaitlist(e) {
+    e.preventDefault();
+    e.target.style.display = 'none';
+    document.getElementById('waitlist-msg').classList.remove('hidden');
+  }
+</script>
+</body>
+</html>
