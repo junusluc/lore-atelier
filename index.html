@@ -34,7 +34,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     html { scroll-behavior: smooth; }
-    body { font-family: 'Inter', sans-serif; background: #FAF7F2; color: #1A1612; }
+    body { font-family: 'Inter', sans-serif; background: #FAF7F2; color: #1A1612; -webkit-font-smoothing: antialiased; }
 
     #progress-bar { position: fixed; top: 0; left: 0; height: 2px; background: #C2644A; z-index: 9999; width: 0%; transition: width 0.1s linear; }
 
@@ -71,19 +71,19 @@
     .marquee-track { animation: marquee 30s linear infinite; }
     .marquee-track:hover { animation-play-state: paused; }
 
-    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
     .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+    .accordion-content { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
     .accordion-content.open { max-height: 600px; }
-    .accordion-icon { transition: transform 0.3s ease; }
+    .accordion-icon { transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
     .accordion-icon.rotated { transform: rotate(45deg); }
 
     .card-lift { transition: transform 0.3s ease, box-shadow 0.3s ease; }
     .card-lift:hover { transform: translateY(-4px); box-shadow: 0 8px 30px rgba(26,22,18,0.08); }
 
     /* Hero large type */
-    .hero-large { font-size: clamp(3.5rem, 10vw, 9rem); line-height: 0.9; letter-spacing: -0.03em; }
+    .hero-large { font-size: clamp(2.8rem, 12vw, 9rem); line-height: 0.9; letter-spacing: -0.03em; }
 
     /* Decorative line */
     .line-accent { width: 48px; height: 1px; background: #C2644A; }
@@ -92,38 +92,108 @@
     .editorial-card { border: 1px solid rgba(196,185,168,0.4); }
 
     /* Mobile menu */
-    .mobile-menu-btn { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; z-index: 10; }
-    .mobile-menu-btn span { display: block; width: 20px; height: 1.5px; background: #5C4F3D; transition: transform 0.3s ease, opacity 0.3s ease; }
+    .mobile-menu-btn { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; z-index: 10; -webkit-tap-highlight-color: transparent; }
+    .mobile-menu-btn span { display: block; width: 22px; height: 1.5px; background: #5C4F3D; transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease; }
     .navbar-dark .mobile-menu-btn span { background: #fff; }
     .mobile-menu-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
-    .mobile-menu-btn.open span:nth-child(2) { opacity: 0; }
+    .mobile-menu-btn.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
     .mobile-menu-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
     @media (max-width: 767px) {
       .mobile-menu-btn { display: flex; }
     }
 
-    .mobile-drawer { position: fixed; top: 0; right: 0; width: 100%; height: 100dvh; background: rgba(250,247,242,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 40; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-    .mobile-drawer.open { transform: translateX(0); }
-    .navbar-dark ~ .mobile-drawer { background: rgba(26,22,18,0.97); }
-    .mobile-drawer a { font-family: 'Instrument Serif', serif; font-size: 2rem; color: #1A1612; text-decoration: none; padding: 8px 0; transition: color 0.2s ease; }
-    .mobile-drawer a:hover { color: #C2644A; }
-    .navbar-dark ~ .mobile-drawer a { color: rgba(255,255,255,0.85); }
-
-    /* Comparison table mobile */
-    @media (max-width: 639px) {
-      .comparison-table { font-size: 11px; }
-      .comparison-table .p-4 { padding: 8px 6px; }
+    .mobile-drawer {
+      position: fixed; top: 0; right: 0; width: 100%; height: 100dvh;
+      background: rgba(250,247,242,0.98);
+      backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+      z-index: 40; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px;
+      opacity: 0; visibility: hidden;
+      transform: translateY(0);
+      transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s;
     }
+    .mobile-drawer.open { opacity: 1; visibility: visible; }
+    .navbar-dark ~ .mobile-drawer { background: rgba(26,22,18,0.98); }
+    .mobile-drawer a {
+      font-family: 'Instrument Serif', serif; font-size: 2.2rem; color: #1A1612;
+      text-decoration: none; padding: 12px 24px; display: block;
+      opacity: 0; transform: translateY(20px);
+      transition: color 0.2s ease, opacity 0.4s cubic-bezier(0.22, 1, 0.36, 1), transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .mobile-drawer.open a {
+      opacity: 1; transform: translateY(0);
+    }
+    .mobile-drawer.open a:nth-child(1) { transition-delay: 0.08s; }
+    .mobile-drawer.open a:nth-child(2) { transition-delay: 0.14s; }
+    .mobile-drawer.open a:nth-child(3) { transition-delay: 0.20s; }
+    .mobile-drawer.open a:nth-child(4) { transition-delay: 0.26s; }
+    .mobile-drawer.open a:nth-child(5) { transition-delay: 0.32s; }
+    .mobile-drawer a:hover { color: #C2644A; }
+    .mobile-drawer a:active { color: #C2644A; }
+    .navbar-dark ~ .mobile-drawer a { color: rgba(255,255,255,0.9); }
+
+    /* ── Mobile-first responsive refinements ── */
+    @media (max-width: 767px) {
+      /* Tighter section spacing on mobile */
+      .section-pad { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+
+      /* Stats cards: scale numbers for mobile */
+      .stat-number { font-size: 2.5rem; }
+
+      /* Comparison table: better mobile layout */
+      .comparison-table { font-size: 11px; }
+      .comparison-table .cell { padding: 10px 8px; }
+
+      /* Hero refinements */
+      .hero-large { line-height: 0.92; }
+
+      /* Accordion larger touch targets */
+      .accordion-trigger { min-height: 56px; }
+
+      /* Footer alignment */
+      .footer-grid { text-align: center; }
+      .footer-grid > div { align-items: center; }
+
+      /* Collection cards tighter */
+      .collection-card svg { width: 4.5rem; height: 8rem; }
+
+      /* Editorial break smaller numbers */
+      .editorial-num { font-size: 3.5rem; }
+    }
+
+    @media (max-width: 639px) {
+      .comparison-table { font-size: 10px; }
+      .comparison-table .cell { padding: 8px 6px; word-break: break-word; }
+    }
+
+    @media (min-width: 768px) {
+      .stat-number { font-size: 3rem; }
+      .editorial-num { font-size: 3.75rem; }
+    }
+    @media (min-width: 1024px) {
+      .editorial-num { font-size: 4.5rem; }
+    }
+
+    /* Staggered reveal for grids */
+    .reveal-stagger > .reveal:nth-child(1) { transition-delay: 0s; }
+    .reveal-stagger > .reveal:nth-child(2) { transition-delay: 0.1s; }
+    .reveal-stagger > .reveal:nth-child(3) { transition-delay: 0.2s; }
+    .reveal-stagger > .reveal:nth-child(4) { transition-delay: 0.3s; }
+    .reveal-stagger > .reveal:nth-child(5) { transition-delay: 0.35s; }
+    .reveal-stagger > .reveal:nth-child(6) { transition-delay: 0.4s; }
+
+    /* Smooth active states for touch */
+    a, button { -webkit-tap-highlight-color: transparent; }
+    .card-lift:active { transform: scale(0.98); }
   </style>
 </head>
 <body class="antialiased">
 
 <!-- Password Gate -->
-<div id="password-gate" style="position:fixed;inset:0;z-index:99999;background:#1A1612;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:16px;padding:24px;">
+<div id="password-gate" style="position:fixed;inset:0;z-index:99999;background:#1A1612;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:18px;padding:24px;">
   <p style="font-family:'Instrument Serif',serif;font-size:1.5rem;color:#FAF7F2;letter-spacing:0.02em;">LORE ATELIÉR</p>
   <p style="font-family:'Space Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:0.3em;color:#A39382;">Enter password</p>
-  <input id="gate-input" type="password" placeholder="••••••••" style="width:260px;max-width:80vw;padding:12px 16px;background:rgba(250,247,242,0.05);border:1px solid rgba(196,185,168,0.3);color:#FAF7F2;font-family:'Inter',sans-serif;font-size:14px;outline:none;text-align:center;letter-spacing:0.1em;" />
-  <button onclick="checkGatePassword()" style="padding:10px 32px;background:#C2644A;color:#FAF7F2;font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.2em;border:none;cursor:pointer;">Enter</button>
+  <input id="gate-input" type="password" placeholder="••••••••" style="width:260px;max-width:80vw;padding:14px 16px;background:rgba(250,247,242,0.05);border:1px solid rgba(196,185,168,0.3);border-radius:0;color:#FAF7F2;font-family:'Inter',sans-serif;font-size:16px;outline:none;text-align:center;letter-spacing:0.1em;-webkit-appearance:none;" />
+  <button onclick="checkGatePassword()" style="padding:12px 36px;background:#C2644A;color:#FAF7F2;font-family:'Space Mono',monospace;font-size:11px;text-transform:uppercase;letter-spacing:0.2em;border:none;cursor:pointer;-webkit-tap-highlight-color:transparent;">Enter</button>
   <p id="gate-error" style="font-family:'Inter',sans-serif;font-size:12px;color:#C2644A;opacity:0;transition:opacity 0.3s;">Incorrect password</p>
 </div>
 <script>
@@ -151,7 +221,7 @@ function checkGatePassword(){
 
 <!-- Navbar -->
 <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b border-stone/30 navbar-dark">
-  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+  <div class="max-w-7xl mx-auto px-5 md:px-6 py-3.5 md:py-4 flex items-center justify-between">
     <a href="#" class="nav-brand font-display text-xl tracking-wide transition-colors">LORE ATELIÉR</a>
     <ul class="pill-nav hidden md:flex" id="pill-nav" onmouseleave="hidePillCursor()">
       <a href="#problem" class="pill-nav-item" onmouseenter="movePillCursor(this)">The Problem</a>
@@ -177,20 +247,20 @@ function checkGatePassword(){
 </div>
 
 <!-- 001 HERO -->
-<section id="hero" class="min-h-[100dvh] flex flex-col justify-end pb-16 md:pb-24 pt-24 md:pt-32 relative overflow-hidden bg-black">
+<section id="hero" class="min-h-[100dvh] flex flex-col justify-end pb-12 md:pb-24 pt-20 md:pt-32 relative overflow-hidden bg-black">
   <canvas id="spiral-canvas"></canvas>
-  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/30 z-[1]"></div>
+  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-black/40 z-[1]"></div>
 
   <div class="relative z-10 max-w-7xl mx-auto px-5 md:px-6 w-full">
-    <p class="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-stone/70 mb-4 md:mb-6 reveal">001 — Introduction</p>
-    <h1 class="font-display hero-large text-white mb-6 md:mb-8 reveal">
+    <p class="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-stone/70 mb-3 md:mb-6 reveal">001 — Introduction</p>
+    <h1 class="font-display hero-large text-white mb-5 md:mb-8 reveal">
       Your skin<br /><em class="italic text-terracotta">deserves better.</em>
     </h1>
-    <div class="line-accent mb-6 md:mb-8 reveal"></div>
-    <p class="text-white/60 font-light max-w-lg text-base md:text-lg leading-relaxed mb-8 md:mb-10 reveal">
+    <div class="line-accent mb-5 md:mb-8 reveal"></div>
+    <p class="text-white/60 font-light max-w-lg text-[15px] md:text-lg leading-relaxed mb-7 md:mb-10 reveal">
       Every synthetic garment you train in sheds up to 700,000 microplastic fibers per wash — fibers that end up on your skin, in your lungs, and in our oceans.
     </p>
-    <a href="#waitlist" class="inline-block border border-white/30 text-white px-8 md:px-10 py-3.5 md:py-4 font-mono text-[11px] md:text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-colors reveal">
+    <a href="#waitlist" class="inline-block border border-white/30 text-white px-7 md:px-10 py-3 md:py-4 font-mono text-[11px] md:text-xs uppercase tracking-[0.2em] hover:bg-white/10 active:bg-white/15 transition-colors reveal">
       Join the Waitlist →
     </a>
   </div>
@@ -227,45 +297,45 @@ function checkGatePassword(){
 </section>
 
 <!-- 002 THE PROBLEM -->
-<section id="problem" class="py-16 md:py-36">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="grid md:grid-cols-2 gap-20 items-start">
+<section id="problem" class="py-14 md:py-36">
+  <div class="max-w-7xl mx-auto px-5 md:px-6">
+    <div class="grid md:grid-cols-2 gap-10 md:gap-20 items-start">
       <div class="reveal">
-        <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">002 — The Problem</p>
-        <h2 class="font-display text-4xl md:text-5xl leading-tight mb-3">
+        <p class="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-clay mb-3 md:mb-4">002 — The Problem</p>
+        <h2 class="font-display text-3xl md:text-5xl leading-tight mb-3">
           What's really in your <em class="italic">activewear?</em>
         </h2>
-        <div class="line-accent mb-8"></div>
-        <p class="text-bark font-light leading-relaxed mb-5">
+        <div class="line-accent mb-6 md:mb-8"></div>
+        <p class="text-bark font-light text-[15px] md:text-base leading-relaxed mb-4 md:mb-5">
           A 2024 study from the University of Birmingham found that nanoplastics from synthetic textiles can penetrate human skin cells and accumulate in tissue. Every time you pull on a polyester legging, you're wrapping your body in plastic.
         </p>
-        <p class="text-bark font-light leading-relaxed mb-5">
+        <p class="text-bark font-light text-[15px] md:text-base leading-relaxed mb-4 md:mb-5">
           During exercise, your pores open. You sweat. Your skin becomes more permeable. And those microscopic plastic particles? They don't just sit on the surface — they migrate inward.
         </p>
-        <p class="text-bark font-light leading-relaxed">
+        <p class="text-bark font-light text-[15px] md:text-base leading-relaxed">
           The activewear industry has normalized synthetic fabrics as "performance" materials. We're here to challenge that narrative with science, transparency, and a radically better alternative.
         </p>
       </div>
-      <div class="grid grid-cols-2 gap-4 reveal">
-        <div class="editorial-card bg-cream p-5 md:p-8 rounded-lg card-lift text-center">
-          <p class="font-display text-5xl text-terracotta mb-3">700K</p>
-          <div class="line-accent mx-auto mb-3"></div>
-          <p class="font-mono text-[10px] uppercase tracking-widest text-clay leading-relaxed">Microfibers shed per wash cycle</p>
+      <div class="grid grid-cols-2 gap-3 md:gap-4 reveal-stagger">
+        <div class="editorial-card bg-cream p-4 md:p-8 rounded-lg card-lift text-center reveal">
+          <p class="font-display stat-number text-terracotta mb-2 md:mb-3">700K</p>
+          <div class="line-accent mx-auto mb-2 md:mb-3"></div>
+          <p class="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-clay leading-relaxed">Microfibers shed per wash cycle</p>
         </div>
-        <div class="editorial-card bg-cream p-5 md:p-8 rounded-lg card-lift text-center">
-          <p class="font-display text-5xl text-terracotta mb-3">100<span class="text-3xl">nm</span></p>
-          <div class="line-accent mx-auto mb-3"></div>
-          <p class="font-mono text-[10px] uppercase tracking-widest text-clay leading-relaxed">Particles cross the skin barrier</p>
+        <div class="editorial-card bg-cream p-4 md:p-8 rounded-lg card-lift text-center reveal">
+          <p class="font-display stat-number text-terracotta mb-2 md:mb-3">100<span class="text-[0.6em]">nm</span></p>
+          <div class="line-accent mx-auto mb-2 md:mb-3"></div>
+          <p class="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-clay leading-relaxed">Particles cross the skin barrier</p>
         </div>
-        <div class="editorial-card bg-cream p-5 md:p-8 rounded-lg card-lift text-center">
-          <p class="font-display text-5xl text-terracotta mb-3">60<span class="text-3xl">%</span></p>
-          <div class="line-accent mx-auto mb-3"></div>
-          <p class="font-mono text-[10px] uppercase tracking-widest text-clay leading-relaxed">Of clothing is synthetic fiber</p>
+        <div class="editorial-card bg-cream p-4 md:p-8 rounded-lg card-lift text-center reveal">
+          <p class="font-display stat-number text-terracotta mb-2 md:mb-3">60<span class="text-[0.6em]">%</span></p>
+          <div class="line-accent mx-auto mb-2 md:mb-3"></div>
+          <p class="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-clay leading-relaxed">Of clothing is synthetic fiber</p>
         </div>
-        <div class="editorial-card bg-cream p-5 md:p-8 rounded-lg card-lift text-center">
-          <p class="font-display text-5xl text-terracotta mb-3">35<span class="text-3xl">%</span></p>
-          <div class="line-accent mx-auto mb-3"></div>
-          <p class="font-mono text-[10px] uppercase tracking-widest text-clay leading-relaxed">Of ocean microplastics from textiles</p>
+        <div class="editorial-card bg-cream p-4 md:p-8 rounded-lg card-lift text-center reveal">
+          <p class="font-display stat-number text-terracotta mb-2 md:mb-3">35<span class="text-[0.6em]">%</span></p>
+          <div class="line-accent mx-auto mb-2 md:mb-3"></div>
+          <p class="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-clay leading-relaxed">Of ocean microplastics from textiles</p>
         </div>
       </div>
     </div>
@@ -273,55 +343,55 @@ function checkGatePassword(){
 </section>
 
 <!-- DIVIDER QUOTE -->
-<section class="bg-ink py-16 md:py-32 relative overflow-hidden">
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-16 bg-terracotta/40"></div>
+<section class="bg-ink py-14 md:py-32 relative overflow-hidden">
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-12 md:h-16 bg-terracotta/40"></div>
   <div class="max-w-3xl mx-auto px-6 text-center reveal">
-    <p class="font-display text-3xl md:text-5xl text-cream/90 italic leading-snug">
+    <p class="font-display text-2xl md:text-5xl text-cream/90 italic leading-snug">
       "We don't believe performance should come at the cost of your health."
     </p>
-    <div class="line-accent mx-auto mt-8 mb-4"></div>
+    <div class="line-accent mx-auto mt-6 md:mt-8 mb-3 md:mb-4"></div>
     <p class="font-mono text-[10px] uppercase tracking-[0.3em] text-clay">— LORE ATELIÉR</p>
   </div>
-  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-16 bg-terracotta/40"></div>
+  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-px h-12 md:h-16 bg-terracotta/40"></div>
 </section>
 
 <!-- 003 WHY COTTON -->
-<section id="cotton" class="py-16 md:py-36">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-12 md:mb-20 reveal">
-      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">003 — Why Cotton</p>
-      <h2 class="font-display text-4xl md:text-5xl leading-tight mb-3">
+<section id="cotton" class="py-14 md:py-36">
+  <div class="max-w-7xl mx-auto px-5 md:px-6">
+    <div class="text-center mb-10 md:mb-20 reveal">
+      <p class="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-clay mb-3 md:mb-4">003 — Why Cotton</p>
+      <h2 class="font-display text-3xl md:text-5xl leading-tight mb-3">
         Four pillars of <em class="italic">conscious performance.</em>
       </h2>
-      <div class="line-accent mx-auto mt-6"></div>
+      <div class="line-accent mx-auto mt-5 md:mt-6"></div>
     </div>
-    <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="editorial-card p-8 rounded-lg card-lift reveal">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 reveal-stagger">
+      <div class="editorial-card p-5 md:p-8 rounded-lg card-lift reveal">
         <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-terracotta">01</span>
-        <h3 class="font-display text-2xl mt-3 mb-4">Supima ELS Cotton</h3>
-        <p class="text-bark text-sm font-light leading-relaxed">
-          Extra-long staple fibers grown in the USA. Twice as strong, incredibly soft, and naturally breathable — without a single synthetic strand.
+        <h3 class="font-display text-xl md:text-2xl mt-2 md:mt-3 mb-2 md:mb-4">Supima ELS Cotton</h3>
+        <p class="text-bark text-[13px] md:text-sm font-light leading-relaxed">
+          Extra-long staple fibers grown in the USA. Twice as strong, incredibly soft, and naturally breathable.
         </p>
       </div>
-      <div class="editorial-card p-8 rounded-lg card-lift reveal">
+      <div class="editorial-card p-5 md:p-8 rounded-lg card-lift reveal">
         <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-terracotta">02</span>
-        <h3 class="font-display text-2xl mt-3 mb-4">TENCEL™ Lyocell</h3>
-        <p class="text-bark text-sm font-light leading-relaxed">
-          Derived from sustainably sourced wood pulp in a closed-loop process. Exceptional moisture management with 50% more absorption than cotton alone.
+        <h3 class="font-display text-xl md:text-2xl mt-2 md:mt-3 mb-2 md:mb-4">TENCEL™ Lyocell</h3>
+        <p class="text-bark text-[13px] md:text-sm font-light leading-relaxed">
+          Derived from sustainably sourced wood pulp. Exceptional moisture management with 50% more absorption.
         </p>
       </div>
-      <div class="editorial-card p-8 rounded-lg card-lift reveal">
+      <div class="editorial-card p-5 md:p-8 rounded-lg card-lift reveal">
         <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-terracotta">03</span>
-        <h3 class="font-display text-2xl mt-3 mb-4">Bio-Based Elastane</h3>
-        <p class="text-bark text-sm font-light leading-relaxed">
-          Plant-derived stretch fiber that replaces petroleum-based spandex. Full range of motion, zero fossil fuel dependency.
+        <h3 class="font-display text-xl md:text-2xl mt-2 md:mt-3 mb-2 md:mb-4">Bio-Based Elastane</h3>
+        <p class="text-bark text-[13px] md:text-sm font-light leading-relaxed">
+          Plant-derived stretch fiber that replaces petroleum-based spandex. Full range of motion.
         </p>
       </div>
-      <div class="editorial-card p-8 rounded-lg card-lift reveal">
+      <div class="editorial-card p-5 md:p-8 rounded-lg card-lift reveal">
         <span class="font-mono text-[10px] uppercase tracking-[0.3em] text-terracotta">04</span>
-        <h3 class="font-display text-2xl mt-3 mb-4">GOTS Certified</h3>
-        <p class="text-bark text-sm font-light leading-relaxed">
-          The gold standard for organic textiles. Every step — from raw fiber to finished garment — is audited for environmental and social responsibility.
+        <h3 class="font-display text-xl md:text-2xl mt-2 md:mt-3 mb-2 md:mb-4">GOTS Certified</h3>
+        <p class="text-bark text-[13px] md:text-sm font-light leading-relaxed">
+          The gold standard for organic textiles. Every step is audited for environmental responsibility.
         </p>
       </div>
     </div>
@@ -329,121 +399,121 @@ function checkGatePassword(){
 </section>
 
 <!-- EDITORIAL BREAK — Typography driven -->
-<section class="py-12 md:py-20 border-y border-stone/20">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="grid md:grid-cols-3 gap-12 reveal">
+<section class="py-10 md:py-20 border-y border-stone/20">
+  <div class="max-w-7xl mx-auto px-5 md:px-6">
+    <div class="grid grid-cols-3 gap-4 md:gap-12 reveal">
       <div class="text-center">
-        <p class="font-display text-6xl md:text-7xl text-ink/10 leading-none mb-3">01</p>
-        <p class="font-display text-xl italic text-ink">Breathe</p>
-        <p class="font-mono text-[10px] uppercase tracking-widest text-clay mt-2">Natural fiber airflow</p>
+        <p class="font-display editorial-num md:text-7xl text-ink/10 leading-none mb-2 md:mb-3">01</p>
+        <p class="font-display text-lg md:text-xl italic text-ink">Breathe</p>
+        <p class="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-clay mt-1.5 md:mt-2">Natural fiber airflow</p>
       </div>
       <div class="text-center">
-        <p class="font-display text-6xl md:text-7xl text-ink/10 leading-none mb-3">02</p>
-        <p class="font-display text-xl italic text-ink">Move</p>
-        <p class="font-mono text-[10px] uppercase tracking-widest text-clay mt-2">Bio-based stretch</p>
+        <p class="font-display editorial-num md:text-7xl text-ink/10 leading-none mb-2 md:mb-3">02</p>
+        <p class="font-display text-lg md:text-xl italic text-ink">Move</p>
+        <p class="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-clay mt-1.5 md:mt-2">Bio-based stretch</p>
       </div>
       <div class="text-center">
-        <p class="font-display text-6xl md:text-7xl text-ink/10 leading-none mb-3">03</p>
-        <p class="font-display text-xl italic text-ink">Protect</p>
-        <p class="font-mono text-[10px] uppercase tracking-widest text-clay mt-2">Zero microplastics</p>
+        <p class="font-display editorial-num md:text-7xl text-ink/10 leading-none mb-2 md:mb-3">03</p>
+        <p class="font-display text-lg md:text-xl italic text-ink">Protect</p>
+        <p class="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-clay mt-1.5 md:mt-2">Zero microplastics</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- 004 COMPARISON TABLE -->
-<section class="py-16 md:py-36">
-  <div class="max-w-4xl mx-auto px-6">
-    <div class="text-center mb-16 reveal">
-      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">004 — Comparison</p>
-      <h2 class="font-display text-4xl md:text-5xl leading-tight mb-3">
+<section class="py-14 md:py-36">
+  <div class="max-w-4xl mx-auto px-5 md:px-6">
+    <div class="text-center mb-10 md:mb-16 reveal">
+      <p class="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-clay mb-3 md:mb-4">004 — Comparison</p>
+      <h2 class="font-display text-3xl md:text-5xl leading-tight mb-3">
         The <em class="italic">difference</em> is clear.
       </h2>
-      <div class="line-accent mx-auto mt-6"></div>
+      <div class="line-accent mx-auto mt-5 md:mt-6"></div>
     </div>
-    <div class="reveal">
-      <div class="comparison-table grid grid-cols-3 gap-0 editorial-card rounded-lg overflow-hidden">
-        <div class="bg-sand p-4 font-mono text-[10px] uppercase tracking-widest text-clay border-b border-stone/30">Criteria</div>
-        <div class="bg-sand p-4 font-mono text-[10px] uppercase tracking-widest text-clay border-b border-l border-stone/30 text-center">Synthetic</div>
-        <div class="bg-sand p-4 font-mono text-[10px] uppercase tracking-widest text-terracotta border-b border-l border-stone/30 text-center">LORE ATELIÉR</div>
+    <div class="reveal -mx-2 md:mx-0 overflow-x-auto">
+      <div class="comparison-table grid grid-cols-3 gap-0 editorial-card rounded-lg overflow-hidden min-w-[340px]">
+        <div class="bg-sand cell p-3 md:p-4 font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-clay border-b border-stone/30">Criteria</div>
+        <div class="bg-sand cell p-3 md:p-4 font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-clay border-b border-l border-stone/30 text-center">Synthetic</div>
+        <div class="bg-sand cell p-3 md:p-4 font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-terracotta border-b border-l border-stone/30 text-center">LORE ATELIÉR</div>
 
-        <div class="p-4 text-sm text-bark border-b border-stone/20">Microplastic Shedding</div>
-        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-bark">700K fibers/wash</div>
-        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-ink font-medium">Zero</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-bark border-b border-stone/20">Microplastic Shedding</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-b border-l border-stone/20 text-bark">700K fibers/wash</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-b border-l border-stone/20 text-ink font-medium">Zero</div>
 
-        <div class="p-4 text-sm text-bark border-b border-stone/20">Skin Contact Safety</div>
-        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-bark">Nanoplastic risk</div>
-        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-ink font-medium">100% natural</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-bark border-b border-stone/20">Skin Contact Safety</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-b border-l border-stone/20 text-bark">Nanoplastic risk</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-b border-l border-stone/20 text-ink font-medium">100% natural</div>
 
-        <div class="p-4 text-sm text-bark border-b border-stone/20">Breathability</div>
-        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-bark">Traps heat</div>
-        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-ink font-medium">Naturally cool</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-bark border-b border-stone/20">Breathability</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-b border-l border-stone/20 text-bark">Traps heat</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-b border-l border-stone/20 text-ink font-medium">Naturally cool</div>
 
-        <div class="p-4 text-sm text-bark border-b border-stone/20">Moisture Management</div>
-        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-bark">Wicking coatings</div>
-        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-ink font-medium">TENCEL™ absorption</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-bark border-b border-stone/20">Moisture Management</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-b border-l border-stone/20 text-bark">Wicking coatings</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-b border-l border-stone/20 text-ink font-medium">TENCEL™ absorption</div>
 
-        <div class="p-4 text-sm text-bark border-b border-stone/20">Stretch & Recovery</div>
-        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-bark">Petroleum spandex</div>
-        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-ink font-medium">Bio-based elastane</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-bark border-b border-stone/20">Stretch & Recovery</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-b border-l border-stone/20 text-bark">Petroleum spandex</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-b border-l border-stone/20 text-ink font-medium">Bio-based elastane</div>
 
-        <div class="p-4 text-sm text-bark border-b border-stone/20">Certification</div>
-        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-bark">Often none</div>
-        <div class="p-4 text-sm text-center border-b border-l border-stone/20 text-ink font-medium">GOTS Certified</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-bark border-b border-stone/20">Certification</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-b border-l border-stone/20 text-bark">Often none</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-b border-l border-stone/20 text-ink font-medium">GOTS Certified</div>
 
-        <div class="p-4 text-sm text-bark">End of Life</div>
-        <div class="p-4 text-sm text-center border-l border-stone/20 text-bark">500+ yr decomposition</div>
-        <div class="p-4 text-sm text-center border-l border-stone/20 text-ink font-medium">Biodegradable</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-bark">End of Life</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-l border-stone/20 text-bark">500+ yr decomp.</div>
+        <div class="cell p-3 md:p-4 text-xs md:text-sm text-center border-l border-stone/20 text-ink font-medium">Biodegradable</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- 005 BUILT FOR MOVEMENT -->
-<section class="py-16 md:py-36 bg-sand">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-12 md:mb-20 reveal">
-      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">005 — Built for Movement</p>
-      <h2 class="font-display text-4xl md:text-5xl leading-tight mb-3">
+<section class="py-14 md:py-36 bg-sand">
+  <div class="max-w-7xl mx-auto px-5 md:px-6">
+    <div class="text-center mb-10 md:mb-20 reveal">
+      <p class="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-clay mb-3 md:mb-4">005 — Built for Movement</p>
+      <h2 class="font-display text-3xl md:text-5xl leading-tight mb-3">
         Designed for every <em class="italic">discipline.</em>
       </h2>
-      <div class="line-accent mx-auto mt-6"></div>
+      <div class="line-accent mx-auto mt-5 md:mt-6"></div>
     </div>
-    <div class="grid md:grid-cols-3 gap-8">
-      <div class="reveal card-lift editorial-card bg-cream rounded-lg p-6 md:p-10">
-        <div class="w-12 h-12 rounded-full border border-terracotta/30 flex items-center justify-center mb-6">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C2644A" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="5" r="2"/><path d="M6 20l3-8 3 3 3-3 3 8"/><path d="M9 12l-3-4m9 4l3-4"/></svg>
+    <div class="grid md:grid-cols-3 gap-4 md:gap-8 reveal-stagger">
+      <div class="reveal card-lift editorial-card bg-cream rounded-lg p-5 md:p-10">
+        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-terracotta/30 flex items-center justify-center mb-4 md:mb-6">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C2644A" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="5" r="2"/><path d="M6 20l3-8 3 3 3-3 3 8"/><path d="M9 12l-3-4m9 4l3-4"/></svg>
         </div>
-        <h3 class="font-display text-2xl mb-3">Pilates & Yoga</h3>
-        <p class="text-bark text-sm font-light leading-relaxed">Full range of motion with bio-based stretch. Soft hand-feel against skin during floor work. No plastic on your body during deep breathing.</p>
+        <h3 class="font-display text-xl md:text-2xl mb-2 md:mb-3">Pilates & Yoga</h3>
+        <p class="text-bark text-[13px] md:text-sm font-light leading-relaxed">Full range of motion with bio-based stretch. Soft hand-feel against skin during floor work.</p>
       </div>
-      <div class="reveal card-lift editorial-card bg-cream rounded-lg p-6 md:p-10">
-        <div class="w-12 h-12 rounded-full border border-terracotta/30 flex items-center justify-center mb-6">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C2644A" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="4" r="2"/><path d="M8 20l2-6h4l2 6"/><path d="M7 10l5 2 5-2"/><path d="M10 12v2m4-2v2"/></svg>
+      <div class="reveal card-lift editorial-card bg-cream rounded-lg p-5 md:p-10">
+        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-terracotta/30 flex items-center justify-center mb-4 md:mb-6">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C2644A" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="4" r="2"/><path d="M8 20l2-6h4l2 6"/><path d="M7 10l5 2 5-2"/><path d="M10 12v2m4-2v2"/></svg>
         </div>
-        <h3 class="font-display text-2xl mb-3">Running & HIIT</h3>
-        <p class="text-bark text-sm font-light leading-relaxed">TENCEL™ manages moisture naturally. Supima cotton stays cool under load. Built to perform without shedding plastic into your sweat.</p>
+        <h3 class="font-display text-xl md:text-2xl mb-2 md:mb-3">Running & HIIT</h3>
+        <p class="text-bark text-[13px] md:text-sm font-light leading-relaxed">TENCEL™ manages moisture naturally. Supima cotton stays cool under load. No plastic shedding.</p>
       </div>
-      <div class="reveal card-lift editorial-card bg-cream rounded-lg p-6 md:p-10">
-        <div class="w-12 h-12 rounded-full border border-terracotta/30 flex items-center justify-center mb-6">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C2644A" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="4" r="2"/><path d="M8 8h8l-1 6H9l-1-6z"/><path d="M9 14l-1 6m7-6l1 6"/></svg>
+      <div class="reveal card-lift editorial-card bg-cream rounded-lg p-5 md:p-10">
+        <div class="w-10 h-10 md:w-12 md:h-12 rounded-full border border-terracotta/30 flex items-center justify-center mb-4 md:mb-6">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C2644A" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="4" r="2"/><path d="M8 8h8l-1 6H9l-1-6z"/><path d="M9 14l-1 6m7-6l1 6"/></svg>
         </div>
-        <h3 class="font-display text-2xl mb-3">Lifestyle</h3>
-        <p class="text-bark text-sm font-light leading-relaxed">Studio to street without compromise. Elevated basics that look as intentional as they feel — because what you wear should never be a health risk.</p>
+        <h3 class="font-display text-xl md:text-2xl mb-2 md:mb-3">Lifestyle</h3>
+        <p class="text-bark text-[13px] md:text-sm font-light leading-relaxed">Studio to street without compromise. What you wear should never be a health risk.</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- 006 THE SCIENCE -->
-<section id="science" class="py-16 md:py-36">
-  <div class="max-w-4xl mx-auto px-6">
-    <div class="text-center mb-16 reveal">
-      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">006 — The Science</p>
-      <h2 class="font-display text-4xl md:text-5xl leading-tight mb-3">
+<section id="science" class="py-14 md:py-36">
+  <div class="max-w-4xl mx-auto px-5 md:px-6">
+    <div class="text-center mb-10 md:mb-16 reveal">
+      <p class="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-clay mb-3 md:mb-4">006 — The Science</p>
+      <h2 class="font-display text-3xl md:text-5xl leading-tight mb-3">
         Research-backed <em class="italic">materials.</em>
       </h2>
-      <div class="line-accent mx-auto mt-6"></div>
+      <div class="line-accent mx-auto mt-5 md:mt-6"></div>
     </div>
     <div class="space-y-3 reveal" id="science-accordion">
       <div class="editorial-card rounded-lg overflow-hidden">
@@ -501,46 +571,46 @@ function checkGatePassword(){
 </section>
 
 <!-- 007 THE COLLECTION -->
-<section id="collection" class="py-16 md:py-36 bg-sand">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-12 md:mb-20 reveal">
-      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">007 — The Collection</p>
-      <h2 class="font-display text-4xl md:text-5xl leading-tight mb-3">
+<section id="collection" class="py-14 md:py-36 bg-sand">
+  <div class="max-w-7xl mx-auto px-5 md:px-6">
+    <div class="text-center mb-10 md:mb-20 reveal">
+      <p class="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-clay mb-3 md:mb-4">007 — The Collection</p>
+      <h2 class="font-display text-3xl md:text-5xl leading-tight mb-3">
         Launching <em class="italic">soon.</em>
       </h2>
-      <div class="line-accent mx-auto mt-6"></div>
+      <div class="line-accent mx-auto mt-5 md:mt-6"></div>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-      <div class="bg-cream rounded-lg p-5 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
-        <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-6 reveal-stagger">
+      <div class="bg-cream rounded-lg p-4 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
+        <svg viewBox="0 0 120 200" class="collection-card w-16 h-28 md:w-24 md:h-40 mb-3 md:mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
           <path d="M35 10h50v30c0 10-2 20-5 40l-8 60c-1 8-2 15-2 20v30h-8v-30l-2-25-2 25v30h-8v-30c0-5-1-12-2-20l-8-60c-3-20-5-30-5-40V10z" stroke-dasharray="4 2"/>
           <line x1="60" y1="10" x2="60" y2="80" stroke-dasharray="2 4" opacity="0.3"/>
         </svg>
-        <h3 class="font-display text-lg">The Legging</h3>
-        <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">Supima · TENCEL™</p>
+        <h3 class="font-display text-base md:text-lg">The Legging</h3>
+        <p class="font-mono text-[9px] md:text-[10px] text-clay uppercase tracking-widest mt-1">Supima · TENCEL™</p>
       </div>
-      <div class="bg-cream rounded-lg p-5 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
-        <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
+      <div class="bg-cream rounded-lg p-4 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
+        <svg viewBox="0 0 120 200" class="collection-card w-16 h-28 md:w-24 md:h-40 mb-3 md:mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
           <path d="M30 50c0-15 10-30 30-30s30 15 30 30v40H30V50z" stroke-dasharray="4 2"/>
           <path d="M30 50c-10 0-18-5-20-15l10-5c2 5 5 10 10 10" stroke-dasharray="4 2"/>
           <path d="M90 50c10 0 18-5 20-15l-10-5c-2 5-5 10-10 10" stroke-dasharray="4 2"/>
           <line x1="60" y1="25" x2="60" y2="85" stroke-dasharray="2 4" opacity="0.3"/>
         </svg>
-        <h3 class="font-display text-lg">The Crop Top</h3>
-        <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">Organic Cotton</p>
+        <h3 class="font-display text-base md:text-lg">The Crop Top</h3>
+        <p class="font-mono text-[9px] md:text-[10px] text-clay uppercase tracking-widest mt-1">Organic Cotton</p>
       </div>
-      <div class="bg-cream rounded-lg p-5 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
-        <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
+      <div class="bg-cream rounded-lg p-4 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
+        <svg viewBox="0 0 120 200" class="collection-card w-16 h-28 md:w-24 md:h-40 mb-3 md:mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
           <path d="M35 30c0-10 10-20 25-20s25 10 25 20v70c0 5-2 10-5 15l-5 10v20h-10v-15h-10v15H45v-20l-5-10c-3-5-5-10-5-15V30z" stroke-dasharray="4 2"/>
           <path d="M35 35c-8 0-15-3-18-12l8-4c2 4 5 8 10 8" stroke-dasharray="4 2"/>
           <path d="M85 35c8 0 15-3 18-12l-8-4c-2 4-5 8-10 8" stroke-dasharray="4 2"/>
           <line x1="60" y1="15" x2="60" y2="100" stroke-dasharray="2 4" opacity="0.3"/>
         </svg>
-        <h3 class="font-display text-lg">The Bodysuit</h3>
-        <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">Supima · Bio-Elastane</p>
+        <h3 class="font-display text-base md:text-lg">The Bodysuit</h3>
+        <p class="font-mono text-[9px] md:text-[10px] text-clay uppercase tracking-widest mt-1">Supima · Bio-Elastane</p>
       </div>
-      <div class="bg-cream rounded-lg p-5 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
-        <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
+      <div class="bg-cream rounded-lg p-4 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
+        <svg viewBox="0 0 120 200" class="collection-card w-16 h-28 md:w-24 md:h-40 mb-3 md:mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
           <path d="M30 45c0-15 10-30 30-30s30 15 30 30v70H30V45z" stroke-dasharray="4 2"/>
           <path d="M45 15c-5-5-10-5-15 0" stroke-dasharray="4 2"/>
           <path d="M75 15c5-5 10-5 15 0" stroke-dasharray="4 2"/>
@@ -549,44 +619,44 @@ function checkGatePassword(){
           <ellipse cx="60" cy="15" rx="12" ry="8" stroke-dasharray="3 2"/>
           <line x1="60" y1="23" x2="60" y2="110" stroke-dasharray="2 4" opacity="0.3"/>
         </svg>
-        <h3 class="font-display text-lg">The Hoodie</h3>
-        <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">GOTS Organic</p>
+        <h3 class="font-display text-base md:text-lg">The Hoodie</h3>
+        <p class="font-mono text-[9px] md:text-[10px] text-clay uppercase tracking-widest mt-1">GOTS Organic</p>
       </div>
-      <div class="bg-cream rounded-lg p-5 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
-        <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
+      <div class="bg-cream rounded-lg p-4 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
+        <svg viewBox="0 0 120 200" class="collection-card w-16 h-28 md:w-24 md:h-40 mb-3 md:mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
           <path d="M30 55c0-10 8-25 30-25s30 15 30 25v20H30V55z" stroke-dasharray="4 2"/>
           <path d="M35 30l-5-15" stroke-dasharray="3 2"/>
           <path d="M85 30l5-15" stroke-dasharray="3 2"/>
           <path d="M45 55c0-8 7-12 15-12s15 4 15 12" stroke-dasharray="3 3" opacity="0.4"/>
           <line x1="60" y1="35" x2="60" y2="70" stroke-dasharray="2 4" opacity="0.3"/>
         </svg>
-        <h3 class="font-display text-lg">The Sport Bra</h3>
-        <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">TENCEL™ · Bio-Elastane</p>
+        <h3 class="font-display text-base md:text-lg">The Sport Bra</h3>
+        <p class="font-mono text-[9px] md:text-[10px] text-clay uppercase tracking-widest mt-1">TENCEL™ · Bio-Elastane</p>
       </div>
-      <div class="bg-cream rounded-lg p-5 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
-        <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
+      <div class="bg-cream rounded-lg p-4 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
+        <svg viewBox="0 0 120 200" class="collection-card w-16 h-28 md:w-24 md:h-40 mb-3 md:mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
           <path d="M25 40c0-12 12-25 35-25s35 13 35 25v75H25V40z" stroke-dasharray="4 2"/>
           <path d="M25 40c-12 0-20-5-22-15l14-6c1 6 4 12 8 13" stroke-dasharray="4 2"/>
           <path d="M95 40c12 0 20-5 22-15l-14-6c-1 6-4 12-8 13" stroke-dasharray="4 2"/>
           <path d="M48 15c3-3 8-3 12-3s9 0 12 3" stroke-dasharray="3 2" opacity="0.5"/>
           <line x1="60" y1="18" x2="60" y2="110" stroke-dasharray="2 4" opacity="0.3"/>
         </svg>
-        <h3 class="font-display text-lg">The Oversized Tee</h3>
-        <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">Supima Cotton</p>
+        <h3 class="font-display text-base md:text-lg">The Oversized Tee</h3>
+        <p class="font-mono text-[9px] md:text-[10px] text-clay uppercase tracking-widest mt-1">Supima Cotton</p>
       </div>
     </div>
   </div>
 </section>
 
 <!-- 008 FAQ -->
-<section class="py-16 md:py-36">
-  <div class="max-w-4xl mx-auto px-6">
-    <div class="text-center mb-16 reveal">
-      <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">008 — FAQ</p>
-      <h2 class="font-display text-4xl md:text-5xl leading-tight mb-3">
+<section class="py-14 md:py-36">
+  <div class="max-w-4xl mx-auto px-5 md:px-6">
+    <div class="text-center mb-10 md:mb-16 reveal">
+      <p class="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-clay mb-3 md:mb-4">008 — FAQ</p>
+      <h2 class="font-display text-3xl md:text-5xl leading-tight mb-3">
         Common <em class="italic">questions.</em>
       </h2>
-      <div class="line-accent mx-auto mt-6"></div>
+      <div class="line-accent mx-auto mt-5 md:mt-6"></div>
     </div>
     <div class="space-y-3 reveal" id="faq-accordion">
       <div class="editorial-card rounded-lg overflow-hidden">
@@ -639,18 +709,18 @@ function checkGatePassword(){
 </section>
 
 <!-- 009 WAITLIST CTA -->
-<section id="waitlist" class="bg-ink py-16 md:py-36 relative overflow-hidden">
-  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-terracotta/30"></div>
-  <div class="max-w-2xl mx-auto px-6 text-center">
-    <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4 reveal">009 — Waitlist</p>
-    <h2 class="font-display text-4xl md:text-5xl text-cream leading-tight mb-4 reveal">
+<section id="waitlist" class="bg-ink py-14 md:py-36 relative overflow-hidden">
+  <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-14 md:h-20 bg-terracotta/30"></div>
+  <div class="max-w-2xl mx-auto px-5 md:px-6 text-center">
+    <p class="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-clay mb-3 md:mb-4 reveal">009 — Waitlist</p>
+    <h2 class="font-display text-3xl md:text-5xl text-cream leading-tight mb-3 md:mb-4 reveal">
       Be the <em class="italic">first to wear it.</em>
     </h2>
-    <div class="line-accent mx-auto mb-8 reveal"></div>
-    <p class="text-stone font-light mb-10 reveal">Join the waitlist for early access, exclusive pricing, and updates on our launch.</p>
+    <div class="line-accent mx-auto mb-6 md:mb-8 reveal"></div>
+    <p class="text-stone font-light text-[15px] md:text-base mb-8 md:mb-10 reveal">Join the waitlist for early access, exclusive pricing, and updates on our launch.</p>
     <form class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto reveal" onsubmit="handleWaitlist(event)">
-      <input type="email" placeholder="your@email.com" required class="flex-1 px-5 py-3 bg-cream/5 border border-stone/30 text-cream placeholder-clay text-sm font-light focus:outline-none focus:border-terracotta transition-colors" />
-      <button type="submit" class="px-8 py-3 bg-terracotta text-cream font-mono text-xs uppercase tracking-[0.2em] hover:bg-terracotta/90 transition-colors whitespace-nowrap">Join Waitlist</button>
+      <input type="email" placeholder="your@email.com" required class="flex-1 px-4 md:px-5 py-3.5 md:py-3 bg-cream/5 border border-stone/30 text-cream placeholder-clay text-sm font-light focus:outline-none focus:border-terracotta transition-colors rounded-none" />
+      <button type="submit" class="px-8 py-3.5 md:py-3 bg-terracotta text-cream font-mono text-xs uppercase tracking-[0.2em] hover:bg-terracotta/90 active:bg-terracotta/80 transition-colors whitespace-nowrap">Join Waitlist</button>
     </form>
     <p id="waitlist-msg" class="text-terracotta text-sm mt-4 hidden font-light">Thank you — you're on the list.</p>
   </div>
@@ -658,26 +728,26 @@ function checkGatePassword(){
 
 <!-- FOOTER -->
 <footer class="bg-cream border-t border-stone/30 py-10 md:py-16">
-  <div class="max-w-7xl mx-auto px-6">
-    <div class="grid md:grid-cols-3 gap-12 items-start">
-      <div>
+  <div class="max-w-7xl mx-auto px-5 md:px-6">
+    <div class="footer-grid grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 items-start">
+      <div class="col-span-2 md:col-span-1">
         <p class="font-display text-xl tracking-wide text-ink mb-2">LORE ATELIÉR</p>
         <p class="text-bark text-sm font-light">Premium cotton-based performance sportswear.</p>
       </div>
-      <div class="flex flex-col gap-2">
-        <a href="#problem" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">The Problem</a>
-        <a href="#cotton" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Why Cotton</a>
-        <a href="#science" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Science</a>
-        <a href="#collection" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Collection</a>
+      <div class="flex flex-col gap-2.5">
+        <a href="#problem" class="font-mono text-[10px] md:text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors py-0.5">The Problem</a>
+        <a href="#cotton" class="font-mono text-[10px] md:text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors py-0.5">Why Cotton</a>
+        <a href="#science" class="font-mono text-[10px] md:text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors py-0.5">Science</a>
+        <a href="#collection" class="font-mono text-[10px] md:text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors py-0.5">Collection</a>
       </div>
-      <div class="flex flex-col gap-2">
-        <a href="#" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Instagram</a>
-        <a href="#" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">TikTok</a>
-        <a href="#" class="font-mono text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors">Pinterest</a>
+      <div class="flex flex-col gap-2.5">
+        <a href="#" class="font-mono text-[10px] md:text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors py-0.5">Instagram</a>
+        <a href="#" class="font-mono text-[10px] md:text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors py-0.5">TikTok</a>
+        <a href="#" class="font-mono text-[10px] md:text-[11px] uppercase tracking-widest text-bark hover:text-terracotta transition-colors py-0.5">Pinterest</a>
       </div>
     </div>
-    <div class="mt-12 pt-8 border-t border-stone/20 flex flex-col md:flex-row justify-between items-center gap-4">
-      <p class="font-mono text-[10px] uppercase tracking-widest text-clay">&copy; 2026 LORE ATELIÉR. All rights reserved.</p>
+    <div class="mt-10 md:mt-12 pt-6 md:pt-8 border-t border-stone/20 flex flex-col md:flex-row justify-between items-center gap-3 md:gap-4">
+      <p class="font-mono text-[9px] md:text-[10px] uppercase tracking-widest text-clay">&copy; 2026 LORE ATELIÉR. All rights reserved.</p>
       <p class="font-display text-sm italic text-clay">Your skin deserves better.</p>
     </div>
   </div>
@@ -696,7 +766,7 @@ function checkGatePassword(){
     entries.forEach(entry => {
       if (entry.isIntersecting) entry.target.classList.add('visible');
     });
-  }, { threshold: 0.1 });
+  }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   // ── Navbar dark/light toggle ──
@@ -746,13 +816,24 @@ function checkGatePassword(){
   function toggleMobileMenu() {
     const btn = document.getElementById('mobile-menu-btn');
     const drawer = document.getElementById('mobile-drawer');
+    const isOpen = drawer.classList.contains('open');
     btn.classList.toggle('open');
     drawer.classList.toggle('open');
-    document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+    document.body.style.overflow = !isOpen ? 'hidden' : '';
+    // Reset link animations when closing
+    if (isOpen) {
+      drawer.querySelectorAll('a').forEach(a => {
+        a.style.transitionDelay = '0s';
+      });
+      setTimeout(() => {
+        drawer.querySelectorAll('a').forEach(a => a.style.transitionDelay = '');
+      }, 500);
+    }
   }
   function closeMobileMenu() {
+    const drawer = document.getElementById('mobile-drawer');
     document.getElementById('mobile-menu-btn').classList.remove('open');
-    document.getElementById('mobile-drawer').classList.remove('open');
+    drawer.classList.remove('open');
     document.body.style.overflow = '';
   }
 
