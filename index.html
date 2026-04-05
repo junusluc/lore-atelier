@@ -40,12 +40,29 @@
 
     #grain { position: fixed; inset: 0; pointer-events: none; z-index: 9998; opacity: 0.03; }
 
-    #navbar { backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); background: rgba(250, 247, 242, 0.8); transition: background 0.4s ease; }
-    #navbar.navbar-dark { background: rgba(0, 0, 0, 0.3); border-color: rgba(255,255,255,0.1); }
-    #navbar.navbar-dark a { color: rgba(255,255,255,0.7); }
-    #navbar.navbar-dark a:hover { color: #C2644A; }
+    #navbar {
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      background-color: rgba(250, 247, 242, 0.92);
+      border-color: rgba(196,185,168,0.3);
+      box-shadow: 0 1px 8px rgba(26,22,18,0.06);
+      transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+    }
+    #navbar.navbar-dark {
+      background-color: rgba(0, 0, 0, 0.3);
+      border-color: rgba(255,255,255,0.1);
+    }
+    .nav-brand { color: #1A1612; }
     #navbar.navbar-dark .nav-brand { color: #fff; }
-    #navbar.navbar-dark .nav-cta { background: #C2644A; color: #FAF7F2; }
+
+    /* Pill nav */
+    .pill-nav { position: relative; display: flex; align-items: center; border-radius: 9999px; padding: 3px; border: 1px solid rgba(92,79,61,0.2); background: rgba(240,235,227,0.7); }
+    .navbar-dark .pill-nav { border-color: rgba(255,255,255,0.15); background: rgba(255,255,255,0.06); }
+    .pill-nav-item { position: relative; z-index: 1; cursor: pointer; padding: 6px 16px; font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 0.1em; color: #5C4F3D; text-decoration: none; white-space: nowrap; transition: color 0.3s ease; }
+    .navbar-dark .pill-nav-item { color: rgba(255,255,255,0.7); }
+    .pill-nav-item.active { color: #FAF7F2; }
+    .navbar-dark .pill-nav-item.active { color: #1A1612; }
+    .pill-cursor { position: absolute; z-index: 0; height: calc(100% - 6px); top: 3px; border-radius: 9999px; background: #1A1612; transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1), width 0.3s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.2s ease; opacity: 0; }
+    .navbar-dark .pill-cursor { background: rgba(255,255,255,0.9); }
 
     /* Spiral hero */
     #spiral-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
@@ -88,13 +105,14 @@
 <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 border-b border-stone/30 navbar-dark">
   <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
     <a href="#" class="nav-brand font-display text-xl tracking-wide transition-colors">LORE ATELIÉR</a>
-    <div class="hidden md:flex items-center gap-8">
-      <a href="#problem" class="font-mono text-[11px] uppercase tracking-widest transition-colors">The Problem</a>
-      <a href="#cotton" class="font-mono text-[11px] uppercase tracking-widest transition-colors">Why Cotton</a>
-      <a href="#science" class="font-mono text-[11px] uppercase tracking-widest transition-colors">Science</a>
-      <a href="#collection" class="font-mono text-[11px] uppercase tracking-widest transition-colors">Collection</a>
-      <a href="#waitlist" class="nav-cta bg-terracotta text-cream px-5 py-2 text-xs font-mono uppercase tracking-widest hover:bg-terracotta/90 transition-colors">Join Waitlist</a>
-    </div>
+    <ul class="pill-nav hidden md:flex" id="pill-nav" onmouseleave="hidePillCursor()">
+      <a href="#problem" class="pill-nav-item" onmouseenter="movePillCursor(this)">The Problem</a>
+      <a href="#cotton" class="pill-nav-item" onmouseenter="movePillCursor(this)">Why Cotton</a>
+      <a href="#science" class="pill-nav-item" onmouseenter="movePillCursor(this)">Science</a>
+      <a href="#collection" class="pill-nav-item" onmouseenter="movePillCursor(this)">Collection</a>
+      <a href="#waitlist" class="pill-nav-item" onmouseenter="movePillCursor(this)">Waitlist</a>
+      <li class="pill-cursor" id="pill-cursor"></li>
+    </ul>
   </div>
 </nav>
 
@@ -634,6 +652,21 @@
     });
   }, { threshold: 0.05 });
   heroObserver.observe(heroSection);
+
+  // ── Pill nav cursor ──
+  const pillCursor = document.getElementById('pill-cursor');
+  const pillItems = document.querySelectorAll('.pill-nav-item');
+  function movePillCursor(el) {
+    pillCursor.style.left = el.offsetLeft + 'px';
+    pillCursor.style.width = el.offsetWidth + 'px';
+    pillCursor.style.opacity = '1';
+    pillItems.forEach(item => item.classList.remove('active'));
+    el.classList.add('active');
+  }
+  function hidePillCursor() {
+    pillCursor.style.opacity = '0';
+    pillItems.forEach(item => item.classList.remove('active'));
+  }
 
   // ── Accordion ──
   function toggleAccordion(btn) {
