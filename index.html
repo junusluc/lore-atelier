@@ -90,6 +90,30 @@
 
     /* Subtle border card */
     .editorial-card { border: 1px solid rgba(196,185,168,0.4); }
+
+    /* Mobile menu */
+    .mobile-menu-btn { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; z-index: 10; }
+    .mobile-menu-btn span { display: block; width: 20px; height: 1.5px; background: #5C4F3D; transition: transform 0.3s ease, opacity 0.3s ease; }
+    .navbar-dark .mobile-menu-btn span { background: #fff; }
+    .mobile-menu-btn.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .mobile-menu-btn.open span:nth-child(2) { opacity: 0; }
+    .mobile-menu-btn.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+    @media (max-width: 767px) {
+      .mobile-menu-btn { display: flex; }
+    }
+
+    .mobile-drawer { position: fixed; top: 0; right: 0; width: 100%; height: 100dvh; background: rgba(250,247,242,0.97); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 40; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+    .mobile-drawer.open { transform: translateX(0); }
+    .navbar-dark ~ .mobile-drawer { background: rgba(26,22,18,0.97); }
+    .mobile-drawer a { font-family: 'Instrument Serif', serif; font-size: 2rem; color: #1A1612; text-decoration: none; padding: 8px 0; transition: color 0.2s ease; }
+    .mobile-drawer a:hover { color: #C2644A; }
+    .navbar-dark ~ .mobile-drawer a { color: rgba(255,255,255,0.85); }
+
+    /* Comparison table mobile */
+    @media (max-width: 639px) {
+      .comparison-table { font-size: 11px; }
+      .comparison-table .p-4 { padding: 8px 6px; }
+    }
   </style>
 </head>
 <body class="antialiased">
@@ -113,24 +137,36 @@
       <a href="#waitlist" class="pill-nav-item" onmouseenter="movePillCursor(this)">Waitlist</a>
       <li class="pill-cursor" id="pill-cursor"></li>
     </ul>
+    <div class="mobile-menu-btn" id="mobile-menu-btn" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </div>
   </div>
 </nav>
 
-<!-- 001 HERO -->
-<section id="hero" class="min-h-screen flex flex-col justify-end pb-24 pt-32 relative overflow-hidden bg-black">
-  <canvas id="spiral-canvas"></canvas>
-  <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-black/30 z-[1]"></div>
+<!-- Mobile drawer -->
+<div class="mobile-drawer" id="mobile-drawer">
+  <a href="#problem" onclick="closeMobileMenu()">The Problem</a>
+  <a href="#cotton" onclick="closeMobileMenu()">Why Cotton</a>
+  <a href="#science" onclick="closeMobileMenu()">Science</a>
+  <a href="#collection" onclick="closeMobileMenu()">Collection</a>
+  <a href="#waitlist" onclick="closeMobileMenu()">Waitlist</a>
+</div>
 
-  <div class="relative z-10 max-w-7xl mx-auto px-6 w-full">
-    <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-stone/70 mb-6 reveal">001 — Introduction</p>
-    <h1 class="font-display hero-large text-white mb-8 reveal">
+<!-- 001 HERO -->
+<section id="hero" class="min-h-[100dvh] flex flex-col justify-end pb-16 md:pb-24 pt-24 md:pt-32 relative overflow-hidden bg-black">
+  <canvas id="spiral-canvas"></canvas>
+  <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-black/30 z-[1]"></div>
+
+  <div class="relative z-10 max-w-7xl mx-auto px-5 md:px-6 w-full">
+    <p class="font-mono text-[10px] md:text-[11px] uppercase tracking-[0.3em] text-stone/70 mb-4 md:mb-6 reveal">001 — Introduction</p>
+    <h1 class="font-display hero-large text-white mb-6 md:mb-8 reveal">
       Your skin<br /><em class="italic text-terracotta">deserves better.</em>
     </h1>
-    <div class="line-accent mb-8 reveal"></div>
-    <p class="text-white/60 font-light max-w-lg text-lg leading-relaxed mb-10 reveal">
+    <div class="line-accent mb-6 md:mb-8 reveal"></div>
+    <p class="text-white/60 font-light max-w-lg text-base md:text-lg leading-relaxed mb-8 md:mb-10 reveal">
       Every synthetic garment you train in sheds up to 700,000 microplastic fibers per wash — fibers that end up on your skin, in your lungs, and in our oceans.
     </p>
-    <a href="#waitlist" class="inline-block border border-white/30 text-white px-10 py-4 font-mono text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-colors reveal">
+    <a href="#waitlist" class="inline-block border border-white/30 text-white px-8 md:px-10 py-3.5 md:py-4 font-mono text-[11px] md:text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-colors reveal">
       Join the Waitlist →
     </a>
   </div>
@@ -167,7 +203,7 @@
 </section>
 
 <!-- 002 THE PROBLEM -->
-<section id="problem" class="py-28 md:py-36">
+<section id="problem" class="py-16 md:py-36">
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid md:grid-cols-2 gap-20 items-start">
       <div class="reveal">
@@ -187,22 +223,22 @@
         </p>
       </div>
       <div class="grid grid-cols-2 gap-4 reveal">
-        <div class="editorial-card bg-cream p-8 rounded-lg card-lift text-center">
+        <div class="editorial-card bg-cream p-5 md:p-8 rounded-lg card-lift text-center">
           <p class="font-display text-5xl text-terracotta mb-3">700K</p>
           <div class="line-accent mx-auto mb-3"></div>
           <p class="font-mono text-[10px] uppercase tracking-widest text-clay leading-relaxed">Microfibers shed per wash cycle</p>
         </div>
-        <div class="editorial-card bg-cream p-8 rounded-lg card-lift text-center">
+        <div class="editorial-card bg-cream p-5 md:p-8 rounded-lg card-lift text-center">
           <p class="font-display text-5xl text-terracotta mb-3">100<span class="text-3xl">nm</span></p>
           <div class="line-accent mx-auto mb-3"></div>
           <p class="font-mono text-[10px] uppercase tracking-widest text-clay leading-relaxed">Particles cross the skin barrier</p>
         </div>
-        <div class="editorial-card bg-cream p-8 rounded-lg card-lift text-center">
+        <div class="editorial-card bg-cream p-5 md:p-8 rounded-lg card-lift text-center">
           <p class="font-display text-5xl text-terracotta mb-3">60<span class="text-3xl">%</span></p>
           <div class="line-accent mx-auto mb-3"></div>
           <p class="font-mono text-[10px] uppercase tracking-widest text-clay leading-relaxed">Of clothing is synthetic fiber</p>
         </div>
-        <div class="editorial-card bg-cream p-8 rounded-lg card-lift text-center">
+        <div class="editorial-card bg-cream p-5 md:p-8 rounded-lg card-lift text-center">
           <p class="font-display text-5xl text-terracotta mb-3">35<span class="text-3xl">%</span></p>
           <div class="line-accent mx-auto mb-3"></div>
           <p class="font-mono text-[10px] uppercase tracking-widest text-clay leading-relaxed">Of ocean microplastics from textiles</p>
@@ -213,7 +249,7 @@
 </section>
 
 <!-- DIVIDER QUOTE -->
-<section class="bg-ink py-24 md:py-32 relative overflow-hidden">
+<section class="bg-ink py-16 md:py-32 relative overflow-hidden">
   <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-16 bg-terracotta/40"></div>
   <div class="max-w-3xl mx-auto px-6 text-center reveal">
     <p class="font-display text-3xl md:text-5xl text-cream/90 italic leading-snug">
@@ -226,9 +262,9 @@
 </section>
 
 <!-- 003 WHY COTTON -->
-<section id="cotton" class="py-28 md:py-36">
+<section id="cotton" class="py-16 md:py-36">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-20 reveal">
+    <div class="text-center mb-12 md:mb-20 reveal">
       <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">003 — Why Cotton</p>
       <h2 class="font-display text-4xl md:text-5xl leading-tight mb-3">
         Four pillars of <em class="italic">conscious performance.</em>
@@ -269,7 +305,7 @@
 </section>
 
 <!-- EDITORIAL BREAK — Typography driven -->
-<section class="py-20 border-y border-stone/20">
+<section class="py-12 md:py-20 border-y border-stone/20">
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid md:grid-cols-3 gap-12 reveal">
       <div class="text-center">
@@ -292,7 +328,7 @@
 </section>
 
 <!-- 004 COMPARISON TABLE -->
-<section class="py-28 md:py-36">
+<section class="py-16 md:py-36">
   <div class="max-w-4xl mx-auto px-6">
     <div class="text-center mb-16 reveal">
       <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">004 — Comparison</p>
@@ -302,7 +338,7 @@
       <div class="line-accent mx-auto mt-6"></div>
     </div>
     <div class="reveal">
-      <div class="grid grid-cols-3 gap-0 editorial-card rounded-lg overflow-hidden">
+      <div class="comparison-table grid grid-cols-3 gap-0 editorial-card rounded-lg overflow-hidden">
         <div class="bg-sand p-4 font-mono text-[10px] uppercase tracking-widest text-clay border-b border-stone/30">Criteria</div>
         <div class="bg-sand p-4 font-mono text-[10px] uppercase tracking-widest text-clay border-b border-l border-stone/30 text-center">Synthetic</div>
         <div class="bg-sand p-4 font-mono text-[10px] uppercase tracking-widest text-terracotta border-b border-l border-stone/30 text-center">LORE ATELIÉR</div>
@@ -340,9 +376,9 @@
 </section>
 
 <!-- 005 BUILT FOR MOVEMENT -->
-<section class="py-28 md:py-36 bg-sand">
+<section class="py-16 md:py-36 bg-sand">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-20 reveal">
+    <div class="text-center mb-12 md:mb-20 reveal">
       <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">005 — Built for Movement</p>
       <h2 class="font-display text-4xl md:text-5xl leading-tight mb-3">
         Designed for every <em class="italic">discipline.</em>
@@ -350,21 +386,21 @@
       <div class="line-accent mx-auto mt-6"></div>
     </div>
     <div class="grid md:grid-cols-3 gap-8">
-      <div class="reveal card-lift editorial-card bg-cream rounded-lg p-10">
+      <div class="reveal card-lift editorial-card bg-cream rounded-lg p-6 md:p-10">
         <div class="w-12 h-12 rounded-full border border-terracotta/30 flex items-center justify-center mb-6">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C2644A" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="5" r="2"/><path d="M6 20l3-8 3 3 3-3 3 8"/><path d="M9 12l-3-4m9 4l3-4"/></svg>
         </div>
         <h3 class="font-display text-2xl mb-3">Pilates & Yoga</h3>
         <p class="text-bark text-sm font-light leading-relaxed">Full range of motion with bio-based stretch. Soft hand-feel against skin during floor work. No plastic on your body during deep breathing.</p>
       </div>
-      <div class="reveal card-lift editorial-card bg-cream rounded-lg p-10">
+      <div class="reveal card-lift editorial-card bg-cream rounded-lg p-6 md:p-10">
         <div class="w-12 h-12 rounded-full border border-terracotta/30 flex items-center justify-center mb-6">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C2644A" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="4" r="2"/><path d="M8 20l2-6h4l2 6"/><path d="M7 10l5 2 5-2"/><path d="M10 12v2m4-2v2"/></svg>
         </div>
         <h3 class="font-display text-2xl mb-3">Running & HIIT</h3>
         <p class="text-bark text-sm font-light leading-relaxed">TENCEL™ manages moisture naturally. Supima cotton stays cool under load. Built to perform without shedding plastic into your sweat.</p>
       </div>
-      <div class="reveal card-lift editorial-card bg-cream rounded-lg p-10">
+      <div class="reveal card-lift editorial-card bg-cream rounded-lg p-6 md:p-10">
         <div class="w-12 h-12 rounded-full border border-terracotta/30 flex items-center justify-center mb-6">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#C2644A" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="4" r="2"/><path d="M8 8h8l-1 6H9l-1-6z"/><path d="M9 14l-1 6m7-6l1 6"/></svg>
         </div>
@@ -376,7 +412,7 @@
 </section>
 
 <!-- 006 THE SCIENCE -->
-<section id="science" class="py-28 md:py-36">
+<section id="science" class="py-16 md:py-36">
   <div class="max-w-4xl mx-auto px-6">
     <div class="text-center mb-16 reveal">
       <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">006 — The Science</p>
@@ -441,9 +477,9 @@
 </section>
 
 <!-- 007 THE COLLECTION -->
-<section id="collection" class="py-28 md:py-36 bg-sand">
+<section id="collection" class="py-16 md:py-36 bg-sand">
   <div class="max-w-7xl mx-auto px-6">
-    <div class="text-center mb-20 reveal">
+    <div class="text-center mb-12 md:mb-20 reveal">
       <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">007 — The Collection</p>
       <h2 class="font-display text-4xl md:text-5xl leading-tight mb-3">
         Launching <em class="italic">soon.</em>
@@ -451,7 +487,7 @@
       <div class="line-accent mx-auto mt-6"></div>
     </div>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
-      <div class="bg-cream rounded-lg p-8 flex flex-col items-center card-lift reveal editorial-card">
+      <div class="bg-cream rounded-lg p-5 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
         <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
           <path d="M35 10h50v30c0 10-2 20-5 40l-8 60c-1 8-2 15-2 20v30h-8v-30l-2-25-2 25v30h-8v-30c0-5-1-12-2-20l-8-60c-3-20-5-30-5-40V10z" stroke-dasharray="4 2"/>
           <line x1="60" y1="10" x2="60" y2="80" stroke-dasharray="2 4" opacity="0.3"/>
@@ -459,7 +495,7 @@
         <h3 class="font-display text-lg">The Legging</h3>
         <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">Supima · TENCEL™</p>
       </div>
-      <div class="bg-cream rounded-lg p-8 flex flex-col items-center card-lift reveal editorial-card">
+      <div class="bg-cream rounded-lg p-5 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
         <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
           <path d="M30 50c0-15 10-30 30-30s30 15 30 30v40H30V50z" stroke-dasharray="4 2"/>
           <path d="M30 50c-10 0-18-5-20-15l10-5c2 5 5 10 10 10" stroke-dasharray="4 2"/>
@@ -469,7 +505,7 @@
         <h3 class="font-display text-lg">The Crop Top</h3>
         <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">Organic Cotton</p>
       </div>
-      <div class="bg-cream rounded-lg p-8 flex flex-col items-center card-lift reveal editorial-card">
+      <div class="bg-cream rounded-lg p-5 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
         <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
           <path d="M35 30c0-10 10-20 25-20s25 10 25 20v70c0 5-2 10-5 15l-5 10v20h-10v-15h-10v15H45v-20l-5-10c-3-5-5-10-5-15V30z" stroke-dasharray="4 2"/>
           <path d="M35 35c-8 0-15-3-18-12l8-4c2 4 5 8 10 8" stroke-dasharray="4 2"/>
@@ -479,7 +515,7 @@
         <h3 class="font-display text-lg">The Bodysuit</h3>
         <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">Supima · Bio-Elastane</p>
       </div>
-      <div class="bg-cream rounded-lg p-8 flex flex-col items-center card-lift reveal editorial-card">
+      <div class="bg-cream rounded-lg p-5 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
         <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
           <path d="M30 45c0-15 10-30 30-30s30 15 30 30v70H30V45z" stroke-dasharray="4 2"/>
           <path d="M45 15c-5-5-10-5-15 0" stroke-dasharray="4 2"/>
@@ -492,7 +528,7 @@
         <h3 class="font-display text-lg">The Hoodie</h3>
         <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">GOTS Organic</p>
       </div>
-      <div class="bg-cream rounded-lg p-8 flex flex-col items-center card-lift reveal editorial-card">
+      <div class="bg-cream rounded-lg p-5 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
         <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
           <path d="M30 55c0-10 8-25 30-25s30 15 30 25v20H30V55z" stroke-dasharray="4 2"/>
           <path d="M35 30l-5-15" stroke-dasharray="3 2"/>
@@ -503,7 +539,7 @@
         <h3 class="font-display text-lg">The Sport Bra</h3>
         <p class="font-mono text-[10px] text-clay uppercase tracking-widest mt-1">TENCEL™ · Bio-Elastane</p>
       </div>
-      <div class="bg-cream rounded-lg p-8 flex flex-col items-center card-lift reveal editorial-card">
+      <div class="bg-cream rounded-lg p-5 md:p-8 flex flex-col items-center card-lift reveal editorial-card">
         <svg viewBox="0 0 120 200" class="w-24 h-40 mb-4" fill="none" stroke="#5C4F3D" stroke-width="1.5" opacity="0.6">
           <path d="M25 40c0-12 12-25 35-25s35 13 35 25v75H25V40z" stroke-dasharray="4 2"/>
           <path d="M25 40c-12 0-20-5-22-15l14-6c1 6 4 12 8 13" stroke-dasharray="4 2"/>
@@ -519,7 +555,7 @@
 </section>
 
 <!-- 008 FAQ -->
-<section class="py-28 md:py-36">
+<section class="py-16 md:py-36">
   <div class="max-w-4xl mx-auto px-6">
     <div class="text-center mb-16 reveal">
       <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4">008 — FAQ</p>
@@ -579,7 +615,7 @@
 </section>
 
 <!-- 009 WAITLIST CTA -->
-<section id="waitlist" class="bg-ink py-28 md:py-36 relative overflow-hidden">
+<section id="waitlist" class="bg-ink py-16 md:py-36 relative overflow-hidden">
   <div class="absolute top-0 left-1/2 -translate-x-1/2 w-px h-20 bg-terracotta/30"></div>
   <div class="max-w-2xl mx-auto px-6 text-center">
     <p class="font-mono text-[11px] uppercase tracking-[0.3em] text-clay mb-4 reveal">009 — Waitlist</p>
@@ -597,7 +633,7 @@
 </section>
 
 <!-- FOOTER -->
-<footer class="bg-cream border-t border-stone/30 py-16">
+<footer class="bg-cream border-t border-stone/30 py-10 md:py-16">
   <div class="max-w-7xl mx-auto px-6">
     <div class="grid md:grid-cols-3 gap-12 items-start">
       <div>
@@ -682,6 +718,20 @@
     }
   }
 
+  // ── Mobile menu ──
+  function toggleMobileMenu() {
+    const btn = document.getElementById('mobile-menu-btn');
+    const drawer = document.getElementById('mobile-drawer');
+    btn.classList.toggle('open');
+    drawer.classList.toggle('open');
+    document.body.style.overflow = drawer.classList.contains('open') ? 'hidden' : '';
+  }
+  function closeMobileMenu() {
+    document.getElementById('mobile-menu-btn').classList.remove('open');
+    document.getElementById('mobile-drawer').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   // ── Waitlist form ──
   function handleWaitlist(e) {
     e.preventDefault();
@@ -700,7 +750,7 @@
     const CAMERA_TRAVEL = 3400;
     const START_DOT_Y = 28;
     const VIEW_ZOOM = 100;
-    const NUM_STARS = 5000;
+    const NUM_STARS = window.innerWidth < 768 ? 2000 : 5000;
     const TRAIL_LEN = 80;
     const CHANGE_T = 0.32;
 
