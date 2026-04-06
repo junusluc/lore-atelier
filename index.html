@@ -65,7 +65,7 @@
     .navbar-dark .pill-cursor { background: rgba(255,255,255,0.9); }
 
     /* Spiral hero */
-    #spiral-canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+    #spiral-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
 
     @keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
     .marquee-track { animation: marquee 30s linear infinite; }
@@ -851,30 +851,46 @@ function checkGatePassword(){
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
+    const isMobile = window.innerWidth < 768;
+    const isSmall = window.innerWidth < 480;
+
     const CAMERA_Z = -400;
     const CAMERA_TRAVEL = 3400;
     const START_DOT_Y = 28;
     const VIEW_ZOOM = 100;
-    const NUM_STARS = window.innerWidth < 768 ? 2000 : 5000;
-    const TRAIL_LEN = 80;
+    const NUM_STARS = isSmall ? 1200 : isMobile ? 1800 : 5000;
+    const TRAIL_LEN = isMobile ? 50 : 80;
     const CHANGE_T = 0.32;
+    const SPIRAL_R = isSmall ? 110 : isMobile ? 130 : 170;
+    const DOT_SCALE = isSmall ? 0.6 : isMobile ? 0.75 : 1.0;
+    const STAR_SCALE = isSmall ? 5.5 : isMobile ? 6.5 : 8.5;
 
     let time = 0;
-    let W, H, size;
+    let W, H, cW, cH;
+    let isVisible = true;
 
     function resize() {
-      const dpr = window.devicePixelRatio || 1;
+      // Cap DPR at 2 on mobile to save GPU
+      const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 2 : 3);
       W = canvas.parentElement.clientWidth;
       H = canvas.parentElement.clientHeight;
-      size = Math.max(W, H);
-      canvas.width = size * dpr;
-      canvas.height = size * dpr;
-      canvas.style.width = W + 'px';
-      canvas.style.height = H + 'px';
+      // Use actual viewport dimensions instead of square
+      cW = W;
+      cH = H;
+      canvas.width = cW * dpr;
+      canvas.height = cH * dpr;
+      canvas.style.width = cW + 'px';
+      canvas.style.height = cH + 'px';
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
     resize();
     window.addEventListener('resize', resize);
+
+    // Pause animation when hero is not visible
+    const visObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { isVisible = e.isIntersecting; });
+    }, { threshold: 0 });
+    visObserver.observe(canvas.parentElement);
 
     // Easing helpers
     function ease(p, g) {
@@ -895,7 +911,7 @@ function checkGatePassword(){
       p = ease(p, 1.8);
       const turns = 6;
       const theta = 2 * Math.PI * turns * Math.sqrt(p);
-      const r = 170 * Math.sqrt(p);
+      const r = SPIRAL_R * Math.sqrt(p);
       return { x: r * Math.cos(theta), y: r * Math.sin(theta) + START_DOT_Y };
     }
 
@@ -906,7 +922,7 @@ function checkGatePassword(){
       const srand = () => { seed = (seed * 9301 + 49297) % 233280; return seed / 233280; };
       for (let i = 0; i < NUM_STARS; i++) {
         const angle = srand() * Math.PI * 2;
-        const dist = 30 * srand() + 15;
+        const dist = (isMobile ? 22 : 30) * srand() + (isMobile ? 10 : 15);
         const rotDir = srand() > 0.5 ? 1 : -1;
         const expRate = 1.2 + srand() * 0.8;
         const finalScale = 0.7 + srand() * 0.6;
@@ -927,7 +943,7 @@ function checkGatePassword(){
         const depth = pos.z - camZ;
         const x = VIEW_ZOOM * pos.x / depth;
         const y = VIEW_ZOOM * pos.y / depth;
-        const sw = 400 * sizeFactor / depth;
+        const sw = 400 * sizeFactor * DOT_SCALE / depth;
         ctx.beginPath();
         ctx.arc(x, y, Math.max(sw / 2, 0.3), 0, Math.PI * 2);
         ctx.fill();
@@ -960,7 +976,7 @@ function checkGatePassword(){
       } else {
         const fp = (dp - 0.7) / 0.3;
         const bx = sp.x + s.dx * 0.7, by = sp.y + s.dy * 0.7;
-        const td = s.dist * s.expRate * 1.5;
+        const td = s.dist * s.expRate * (isMobile ? 1.1 : 1.5);
         const sa = s.angle + 1.2 * s.rotDir * fp * Math.PI;
         sx = lerp(bx, sp.x + td * Math.cos(sa), fp);
         sy = lerp(by, sp.y + td * Math.sin(sa), fp);
@@ -973,14 +989,19 @@ function checkGatePassword(){
       if (dp < 0.6) sm = 1 + dp * 0.2;
       else { const t = (dp - 0.6) / 0.4; sm = 1.2 * (1 - t) + s.finalScale * t; }
 
-      projectDot({ x: vx, y: vy, z: s.z }, 8.5 * s.swFactor * sm);
+      projectDot({ x: vx, y: vy, z: s.z }, STAR_SCALE * s.swFactor * sm);
     }
 
     function render() {
+      if (!isVisible) return;
+
       ctx.fillStyle = '#000';
-      ctx.fillRect(0, 0, size, size);
+      ctx.fillRect(0, 0, cW, cH);
       ctx.save();
-      ctx.translate(size / 2, size / 2);
+      // Center in actual viewport, offset slightly down on portrait for better composition
+      const centerX = cW / 2;
+      const centerY = isMobile ? cH * 0.42 : cH / 2;
+      ctx.translate(centerX, centerY);
 
       const t1 = clamp(map(time, 0, CHANGE_T + 0.25, 0, 1), 0, 1);
       const t2 = clamp(map(time, CHANGE_T, 1, 0, 1), 0, 1);
@@ -989,7 +1010,9 @@ function checkGatePassword(){
       // Trail
       for (let i = 0; i < TRAIL_LEN; i++) {
         const f = map(i, 0, TRAIL_LEN, 1.1, 0.1);
-        const sw = (1.3 * (1 - t1) + 3.0 * Math.sin(Math.PI * t1)) * f;
+        const trailWidth = isMobile ? 1.0 : 1.3;
+        const trailPeak = isMobile ? 2.2 : 3.0;
+        const sw = (trailWidth * (1 - t1) + trailPeak * Math.sin(Math.PI * t1)) * f;
         ctx.fillStyle = '#fff';
         const pt = t1 - 0.00015 * i;
         const pos = spiralPath(pt);
@@ -1005,7 +1028,7 @@ function checkGatePassword(){
       // Start dot
       if (time > CHANGE_T) {
         const dy = CAMERA_Z * START_DOT_Y / VIEW_ZOOM;
-        projectDot({ x: 0, y: dy, z: CAMERA_TRAVEL }, 2.5);
+        projectDot({ x: 0, y: dy, z: CAMERA_TRAVEL }, isMobile ? 1.8 : 2.5);
       }
 
       ctx.restore();
@@ -1014,7 +1037,7 @@ function checkGatePassword(){
     // GSAP timeline
     gsap.to({ v: 0 }, {
       v: 1,
-      duration: 15,
+      duration: isMobile ? 12 : 15,
       repeat: -1,
       ease: 'none',
       onUpdate: function() {
